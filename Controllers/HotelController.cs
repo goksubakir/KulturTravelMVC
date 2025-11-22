@@ -19,6 +19,7 @@ public class HotelController : Controller
     public IActionResult Search()
     {
         ViewBag.Countries = _hotelService.GetCountries();
+        ViewBag.TotalHotels = _hotelService.GetAllHotels().Count;
         return View(new SearchViewModel());
     }
 
@@ -30,7 +31,15 @@ public class HotelController : Controller
         return Json(cities);
     }
 
-    // Otel listesi
+    // Otel listesi - Tüm otelleri göster
+    public IActionResult List()
+    {
+        var hotels = _hotelService.GetAllHotels();
+        ViewBag.Search = new SearchViewModel();
+        return View(hotels);
+    }
+
+    // Otel listesi - Arama ile
     [HttpPost]
     public IActionResult List(SearchViewModel search)
     {
@@ -92,4 +101,5 @@ public class HotelController : Controller
         return RedirectToAction("Create", "Reservation");
     }
 }
+
 

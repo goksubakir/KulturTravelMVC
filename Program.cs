@@ -25,7 +25,15 @@ else
     app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    // Development'ta HTTPS redirection'ı atla veya sadece HTTP kullan
+}
+else
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();

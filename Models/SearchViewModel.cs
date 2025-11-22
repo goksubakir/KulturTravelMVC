@@ -12,3 +12,4 @@ public class SearchViewModel
     public int? StarRating { get; set; }
 }
 
+
