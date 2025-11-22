@@ -1,0 +1,152 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background: #f9f9f9;
+  }
+  
+  /* HEADER & NAV */
+  header {
+    background-color: #0077b6;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+  }
+  nav {
+    background-color: #0096c7;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  nav a:hover, nav a.active { text-decoration: underline; }
+  
+  /* 🔹 3 SÜTUN SATIR DÜZENİ */
+  .contact-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 85vh;
+  }
+  
+  /* ORTAK STİL */
+  .contact-box {
+    flex: 1;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  
+  /* SOL FORM BLOĞU */
+  .form-box {
+    background: #ffffff;
+  }
+  .form-box h2 {
+    color: #0077b6;
+    margin-bottom: 20px;
+  }
+  .form-box input,
+  .form-box textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 15px;
+  }
+  .form-box input:focus,
+  .form-box textarea:focus {
+    outline: none;
+    border-color: #0077b6;
+  }
+  .form-box button {
+    background: #ffd60a;
+    color: #000;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .form-box button:hover {
+    background: #ffc300;
+  }
+  .success-msg {
+    display: none;
+    color: green;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .terms {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  
+  /* ORTA BİLGİ BLOĞU */
+  .info-box {
+    background: #023e8a;
+    color: white;
+    text-align: center;
+  }
+  .info-box h3 {
+    color: #ffd60a;
+    margin-bottom: 25px;
+  }
+  .info-box h4 {
+    color: #ffd60a;
+    margin-top: 20px;
+  }
+  .info-box p {
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .info-box li {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 0;
+  }
+  
+  /* SAĞ HARİTA BLOĞU */
+  .map-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  /* FOOTER */
+  footer {
+    background: #03045e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  .footer-links a {
+    color: #90e0ef;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 992px) {
+    .contact-row {
+      flex-direction: column;
+      height: auto;
+    }
+    .contact-box {
+      height: auto;
+    }
+  }
+  
