@@ -1,0 +1,150 @@
+@model List<KulturTravelMVC.Models.Hotel>
+@{
+    ViewData["Title"] = "Otel Listesi | Kültür Travel";
+    Layout = null;
+    var search = ViewBag.Search as KulturTravelMVC.Models.SearchViewModel;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .hotels-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .hotel-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            display: flex;
+            transition: transform 0.3s;
+        }
+        .hotel-card:hover {
+            transform: translateY(-5px);
+        }
+        .hotel-image {
+            width: 300px;
+            height: 250px;
+            object-fit: cover;
+        }
+        .hotel-info {
+            padding: 25px;
+            flex: 1;
+        }
+        .hotel-name {
+            color: #0077b6;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .hotel-location {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .hotel-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .stars {
+            color: #ffd60a;
+            font-size: 20px;
+        }
+        .price {
+            font-size: 28px;
+            color: #0077b6;
+            font-weight: 600;
+            margin: 15px 0;
+        }
+        .price span {
+            font-size: 16px;
+            color: #666;
+        }
+        .btn-details {
+            background: #0077b6;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn-details:hover {
+            background: #023e8a;
+        }
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search" class="active">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <div class="hotels-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Bulunan Oteller (@Model.Count)</h2>
+        
+        @if (Model.Count == 0)
+        {
+            <div class="no-results">
+                <h3>Aradığınız kriterlere uygun otel bulunamadı.</h3>
+                <a asp-action="Search" class="btn-details" style="margin-top: 20px;">Yeni Arama Yap</a>
+            </div>
+        }
+        else
+        {
+            @foreach (var hotel in Model)
+            {
+                <div class="hotel-card">
+                    <img src="@(hotel.Images.FirstOrDefault() ?? "/images/1.png")" alt="@hotel.Name" class="hotel-image" />
+                    <div class="hotel-info">
+                        <h3 class="hotel-name">@hotel.Name</h3>
+                        <p class="hotel-location">📍 @hotel.City, @hotel.Country</p>
+                        <div class="hotel-rating">
+                            <span class="stars">@string.Concat(Enumerable.Repeat("⭐", hotel.StarRating))</span>
+                            <span>(@hotel.AverageRating.ToString("F1") - @hotel.TotalRatings değerlendirme)</span>
+                        </div>
+                        <p style="color: #666; margin-bottom: 15px;">@hotel.Description</p>
+                        <div class="price">
+                            @hotel.PricePerNight.ToString("N0") <span>₺ / gece</span>
+                        </div>
+                        <a asp-action="Details" asp-route-id="@hotel.Id" class="btn-details">Detayları Gör</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+</body>
+</html>
+

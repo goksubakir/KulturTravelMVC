@@ -21,6 +21,7 @@
 
     <nav>
         <a asp-controller="Home" asp-action="Index" class="active">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
         <a asp-controller="Home" asp-action="About">Hakkımızda</a>
         <a asp-controller="Home" asp-action="Contact">İletişim</a>
         <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
@@ -39,7 +40,7 @@
         <div class="hero-text">
             <h2>Hayalinizdeki Tatili Planlayın</h2>
             <p>The hotel you are looking for is just one click away!</p>
-            <button onclick="showAlert()">Keşfetmeye Başla</button>
+            <a asp-controller="Hotel" asp-action="Search" style="background: #0077b6; color: white; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px;">Keşfetmeye Başla</a>
         </div>
     </section>
 

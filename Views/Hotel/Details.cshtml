@@ -1,0 +1,264 @@
+@model KulturTravelMVC.Models.Hotel
+@{
+    ViewData["Title"] = Model.Name + " | Kültür Travel";
+    Layout = null;
+    var ratings = ViewBag.Ratings as List<KulturTravelMVC.Models.Rating> ?? new List<KulturTravelMVC.Models.Rating>();
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .hotel-details {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .hotel-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .hotel-images {
+            flex: 1;
+        }
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .hotel-info-header {
+            flex: 1;
+        }
+        .hotel-title {
+            color: #0077b6;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .room-selection {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .room-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        .room-card:hover {
+            border-color: #0077b6;
+        }
+        .room-card.selected {
+            border-color: #0077b6;
+            background: #f0f8ff;
+        }
+        .rating-section {
+            margin-top: 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .star-rating {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ddd;
+        }
+        .star-rating.active {
+            color: #ffd60a;
+        }
+        .date-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <div class="hotel-details">
+        <div class="hotel-header">
+            <div class="hotel-images">
+                <img src="@(Model.Images.FirstOrDefault() ?? "/images/1.png")" alt="@Model.Name" class="main-image" />
+            </div>
+            <div class="hotel-info-header">
+                <h2 class="hotel-title">@Model.Name</h2>
+                <p style="color: #666; font-size: 18px;">📍 @Model.Address, @Model.City, @Model.Country</p>
+                <div style="margin: 20px 0;">
+                    <span style="font-size: 24px; color: #ffd60a;">@string.Concat(Enumerable.Repeat("⭐", Model.StarRating))</span>
+                    <span style="margin-left: 10px;">(@Model.AverageRating.ToString("F1") - @Model.TotalRatings değerlendirme)</span>
+                </div>
+                <p style="color: #666; line-height: 1.8; margin-top: 20px;">@Model.Description</p>
+                <div style="font-size: 32px; color: #0077b6; font-weight: 600; margin-top: 20px;">
+                    @Model.PricePerNight.ToString("N0") <span style="font-size: 18px; color: #666;">₺ / gece</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="room-selection">
+            <h3 style="color: #0077b6; margin-bottom: 20px;">Oda Seçimi</h3>
+            <form id="reservationForm" method="post" asp-controller="Hotel" asp-action="SelectRoom">
+                <input type="hidden" name="hotelId" value="@Model.Id" />
+                
+                <div class="date-inputs">
+                    <div>
+                        <label>Giriş Tarihi</label>
+                        <input type="date" name="checkIn" id="checkIn" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div>
+                        <label>Çıkış Tarihi</label>
+                        <input type="date" name="checkOut" id="checkOut" required min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label>Kişi Sayısı</label>
+                    <input type="number" name="guests" id="guests" min="1" max="10" value="2" required />
+                </div>
+
+                @foreach (var room in Model.Rooms)
+                {
+                    <div class="room-card" onclick="selectRoom(@room.Id)">
+                        <input type="radio" name="roomId" value="@room.Id" id="room@room.Id" required />
+                        <label for="room@room.Id" style="cursor: pointer; width: 100%;">
+                            <strong style="color: #0077b6; font-size: 20px;">@room.Type</strong>
+                            <p style="color: #666; margin: 10px 0;">@room.Description</p>
+                            <p style="color: #666;">Max @room.MaxGuests kişi</p>
+                            <div style="margin-top: 10px;">
+                                <strong style="color: #0077b6; font-size: 24px;">@room.PricePerNight.ToString("N0") ₺</strong> <span style="color: #666;">/ gece</span>
+                            </div>
+                        </label>
+                    </div>
+                }
+
+                <button type="submit" style="background: #0077b6; color: white; padding: 15px 40px; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 20px;">
+                    Rezervasyon Yap
+                </button>
+            </form>
+        </div>
+
+        <div class="rating-section">
+            <h3 style="color: #0077b6; margin-bottom: 20px;">Değerlendirmeler</h3>
+            
+            <div id="ratingForm" style="margin-bottom: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h4>Otel Hakkında Ne Düşünüyorsunuz?</h4>
+                <div class="star-rating" id="starRating">
+                    <span data-star="1">⭐</span>
+                    <span data-star="2">⭐</span>
+                    <span data-star="3">⭐</span>
+                    <span data-star="4">⭐</span>
+                    <span data-star="5">⭐</span>
+                </div>
+                <textarea id="ratingComment" placeholder="Yorumunuz (opsiyonel)" style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: 2px solid #e0e0e0;"></textarea>
+                <button onclick="submitRating()" style="background: #0077b6; color: white; padding: 10px 30px; border: none; border-radius: 8px; margin-top: 10px; cursor: pointer;">
+                    Değerlendirme Gönder
+                </button>
+            </div>
+
+            <div id="ratingsList">
+                @foreach (var rating in ratings)
+                {
+                    <div style="border-bottom: 1px solid #e0e0e0; padding: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>@rating.UserName</strong>
+                        <span style="color: #ffd60a;">@string.Concat(Enumerable.Repeat("⭐", rating.Stars))</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(rating.Comment))
+                    {
+                        <p style="color: #666;">@rating.Comment</p>
+                    }
+                    <small style="color: #999;">@rating.CreatedAt.ToString("dd MMMM yyyy")</small>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        let selectedStars = 0;
+        
+        $('.star-rating span').hover(function() {
+            let star = $(this).data('star');
+            $('.star-rating span').each(function(index) {
+                if (index < star) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
+        });
+
+        $('.star-rating span').click(function() {
+            selectedStars = $(this).data('star');
+            $('.star-rating span').each(function(index) {
+                if (index < selectedStars) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            });
+        });
+
+        function selectRoom(roomId) {
+            document.getElementById('room' + roomId).checked = true;
+            $('.room-card').removeClass('selected');
+            $(event.currentTarget).addClass('selected');
+        }
+
+        function submitRating() {
+            if (selectedStars === 0) {
+                alert('Lütfen yıldız seçin!');
+                return;
+            }
+
+            let comment = $('#ratingComment').val();
+            
+            $.post('/Rating/AddRating', {
+                hotelId: @Model.Id,
+                stars: selectedStars,
+                comment: comment
+            }, function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    location.reload();
+                } else {
+                    alert(response.message);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
