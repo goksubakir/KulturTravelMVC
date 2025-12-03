@@ -1,6 +1,6 @@
 @model KulturTravelMVC.Models.Payment
 @{
-    ViewData["Title"] = "Ödeme Başarılı | Kültür Travel";
+    ViewBag.Title = "Ödeme Başarılı | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .success-container {
             max-width: 600px;
@@ -45,11 +45,11 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <div class="success-container">
@@ -62,13 +62,13 @@
             <p><strong>Tutar:</strong> @Model.Amount.ToString("N0") ₺</p>
             <p><strong>Tarih:</strong> @Model.PaymentDate.ToString("dd MMMM yyyy HH:mm")</p>
         }
-        <a asp-controller="Home" asp-action="Index" class="btn-home">Ana Sayfaya Dön</a>
+        @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home", null, new { @class = "btn-home" })
     </div>
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>

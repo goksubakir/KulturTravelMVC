@@ -1,6 +1,6 @@
 @model KulturTravelMVC.Models.Reservation
 @{
-    ViewData["Title"] = "Rezervasyon | Kültür Travel";
+    ViewBag.Title = "Rezervasyon | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .reservation-container {
             max-width: 800px;
@@ -61,11 +61,11 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <div class="reservation-container">
@@ -80,15 +80,15 @@
             <p><strong>Toplam Fiyat:</strong> <span style="font-size: 24px; color: #0077b6; font-weight: 600;">@Model.TotalPrice.ToString("N0") ₺</span></p>
         </div>
 
-        <form asp-action="Create" method="post">
-            <input type="hidden" asp-for="HotelId" />
-            <input type="hidden" asp-for="HotelName" />
-            <input type="hidden" asp-for="RoomId" />
-            <input type="hidden" asp-for="RoomType" />
-            <input type="hidden" asp-for="CheckInDate" />
-            <input type="hidden" asp-for="CheckOutDate" />
-            <input type="hidden" asp-for="NumberOfGuests" />
-            <input type="hidden" asp-for="TotalPrice" />
+        <form method="post" action="@Url.Action("Create")">
+            <input type="hidden" name="HotelId" id="HotelId" />
+            <input type="hidden" name="HotelName" id="HotelName" />
+            <input type="hidden" name="RoomId" id="RoomId" />
+            <input type="hidden" name="RoomType" id="RoomType" />
+            <input type="hidden" name="CheckInDate" id="CheckInDate" />
+            <input type="hidden" name="CheckOutDate" id="CheckOutDate" />
+            <input type="hidden" name="NumberOfGuests" id="NumberOfGuests" />
+            <input type="hidden" name="TotalPrice" id="TotalPrice" />
 
             <div class="form-group">
                 <label>Ad Soyad</label>
@@ -105,8 +105,8 @@
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>

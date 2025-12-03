@@ -1,96 +1,94 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 using KulturTravelMVC.Models;
 using KulturTravelMVC.Services;
 
-namespace KulturTravelMVC.Controllers;
-
-public class ReservationController : Controller
+namespace KulturTravelMVC.Controllers
 {
-    private readonly HotelService _hotelService;
-    private readonly ILogger<ReservationController> _logger;
-
-    public ReservationController(HotelService hotelService, ILogger<ReservationController> logger)
+    public class ReservationController : Controller
     {
-        _hotelService = hotelService;
-        _logger = logger;
-    }
+        private readonly HotelService _hotelService;
 
-    // Rezervasyon oluşturma sayfası
-    public IActionResult Create()
-    {
-        // Check if user is logged in
-        if (!IsUserLoggedIn())
+        public ReservationController()
         {
-            TempData["Message"] = "Rezervasyon yapmak için lütfen giriş yapın.";
-            return RedirectToAction("Login", "Auth");
+            _hotelService = HotelService.Instance;
         }
 
-        // Get reservation from temp data
-        var reservationJson = TempData["Reservation"]?.ToString();
-        if (string.IsNullOrEmpty(reservationJson))
+        // Rezervasyon oluşturma sayfası
+        public ActionResult Create()
         {
-            return RedirectToAction("Search", "Hotel");
+            // Check if user is logged in
+            if (!IsUserLoggedIn())
+            {
+                TempData["Message"] = "Rezervasyon yapmak için lütfen giriş yapın.";
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Get reservation from temp data
+            var reservationJson = TempData["Reservation"]?.ToString();
+            if (string.IsNullOrEmpty(reservationJson))
+            {
+                return RedirectToAction("Search", "Hotel");
+            }
+
+            var reservation = Newtonsoft.Json.JsonConvert.DeserializeObject<Reservation>(reservationJson);
+            if (reservation == null)
+            {
+                return RedirectToAction("Search", "Hotel");
+            }
+
+            // Get user info from localStorage (will be handled by JavaScript)
+            ViewBag.Reservation = reservation;
+            return View(reservation);
         }
 
-        var reservation = System.Text.Json.JsonSerializer.Deserialize<Reservation>(reservationJson);
-        if (reservation == null)
+        // Rezervasyon kaydetme
+        [HttpPost]
+        public ActionResult Create(Reservation reservation)
         {
-            return RedirectToAction("Search", "Hotel");
+            if (!IsUserLoggedIn())
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Get user info from session
+            reservation.UserEmail = GetUserEmail();
+            reservation.UserName = GetUserName();
+            
+            var createdReservation = _hotelService.CreateReservation(reservation);
+            
+            TempData["ReservationId"] = createdReservation.Id;
+            return RedirectToAction("Payment", "Payment");
         }
 
-        // Get user info from localStorage (will be handled by JavaScript)
-        ViewBag.Reservation = reservation;
-        return View(reservation);
-    }
-
-    // Rezervasyon kaydetme
-    [HttpPost]
-    public IActionResult Create(Reservation reservation)
-    {
-        if (!IsUserLoggedIn())
+        // Kullanıcının rezervasyonları
+        public ActionResult MyReservations()
         {
-            return RedirectToAction("Login", "Auth");
+            if (!IsUserLoggedIn())
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Get user email from session (handled by JS)
+            var userEmail = GetUserEmail();
+            var reservations = _hotelService.GetUserReservations(userEmail);
+            
+            return View(reservations);
         }
 
-        // Get user info from session
-        reservation.UserEmail = GetUserEmail();
-        reservation.UserName = GetUserName();
-        
-        var createdReservation = _hotelService.CreateReservation(reservation);
-        
-        TempData["ReservationId"] = createdReservation.Id;
-        return RedirectToAction("Payment", "Payment");
-    }
-
-    // Kullanıcının rezervasyonları
-    public IActionResult MyReservations()
-    {
-        if (!IsUserLoggedIn())
+        private bool IsUserLoggedIn()
         {
-            return RedirectToAction("Login", "Auth");
+            // Check session or cookie
+            return Session["UserEmail"] != null;
         }
 
-        // Get user email from session (handled by JS)
-        var userEmail = GetUserEmail();
-        var reservations = _hotelService.GetUserReservations(userEmail);
-        
-        return View(reservations);
-    }
+        private string GetUserEmail()
+        {
+            return Session["UserEmail"]?.ToString() ?? string.Empty;
+        }
 
-    private bool IsUserLoggedIn()
-    {
-        // Check session or cookie
-        return HttpContext.Session.GetString("UserEmail") != null;
-    }
-
-    private string GetUserEmail()
-    {
-        return HttpContext.Session.GetString("UserEmail") ?? string.Empty;
-    }
-
-    private string GetUserName()
-    {
-        return HttpContext.Session.GetString("UserName") ?? string.Empty;
+        private string GetUserName()
+        {
+            return Session["UserName"]?.ToString() ?? string.Empty;
+        }
     }
 }
-

@@ -1,13 +1,22 @@
-namespace KulturTravelMVC.Models;
+using System;
 
-public class User
+namespace KulturTravelMVC.Models
 {
-    public int Id { get; set; }
-    public string FullName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public string Role { get; set; } = "User"; // User, Admin
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public class User
+    {
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; } // User, Admin
+        public DateTime CreatedAt { get; set; }
+
+        public User()
+        {
+            Role = "User";
+            CreatedAt = DateTime.Now;
+        }
+    }
 }
 
 

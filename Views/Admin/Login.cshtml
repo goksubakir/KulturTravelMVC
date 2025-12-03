@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Admin Girişi | Kültür Travel";
+    ViewBag.Title = "Admin Girişi | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -7,9 +7,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/login.css")" />
 </head>
 <body>
     <div class="login-container">
@@ -22,7 +22,8 @@
                     @ViewBag.Error
                 </div>
             }
-            <form asp-action="Login" method="post">
+            @using (Html.BeginForm("Login", "Admin", FormMethod.Post))
+            {
                 <label for="email">E-posta:</label>
                 <input type="email" id="email" name="email" required />
 
@@ -30,13 +31,11 @@
                 <input type="password" id="password" name="password" required />
 
                 <button type="submit">Giriş Yap</button>
-            </form>
+            }
             <p class="small-text">
-                <a asp-controller="Home" asp-action="Index">Ana Sayfaya Dön</a>
+                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
             </p>
         </div>
     </div>
 </body>
 </html>
-
-

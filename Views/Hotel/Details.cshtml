@@ -1,6 +1,6 @@
 @model KulturTravelMVC.Models.Hotel
 @{
-    ViewData["Title"] = Model.Name + " | Kültür Travel";
+    ViewBag.Title = Model.Name + " | Kültür Travel";
     Layout = null;
     var ratings = ViewBag.Ratings as List<KulturTravelMVC.Models.Rating> ?? new List<KulturTravelMVC.Models.Rating>();
 }
@@ -9,9 +9,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .hotel-details {
             max-width: 1200px;
@@ -90,11 +90,11 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <div class="hotel-details">
@@ -118,7 +118,7 @@
 
         <div class="room-selection">
             <h3 style="color: #0077b6; margin-bottom: 20px;">Oda Seçimi</h3>
-            <form id="reservationForm" method="post" asp-controller="Hotel" asp-action="SelectRoom">
+            <form id="reservationForm" method="post" action="@Url.Action("SelectRoom", "Hotel")">
                 <input type="hidden" name="hotelId" value="@Model.Id" />
                 
                 <div class="date-inputs">
@@ -197,15 +197,15 @@
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>
         <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script>
         let selectedStars = 0;
         

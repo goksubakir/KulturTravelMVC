@@ -1,105 +1,102 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 using KulturTravelMVC.Models;
 using KulturTravelMVC.Services;
 
-namespace KulturTravelMVC.Controllers;
-
-public class HotelController : Controller
+namespace KulturTravelMVC.Controllers
 {
-    private readonly HotelService _hotelService;
-    private readonly ILogger<HotelController> _logger;
-
-    public HotelController(HotelService hotelService, ILogger<HotelController> logger)
+    public class HotelController : Controller
     {
-        _hotelService = hotelService;
-        _logger = logger;
-    }
+        private readonly HotelService _hotelService;
 
-    // Otel arama sayfası
-    public IActionResult Search()
-    {
-        ViewBag.Countries = _hotelService.GetCountries();
-        ViewBag.TotalHotels = _hotelService.GetAllHotels().Count;
-        return View(new SearchViewModel());
-    }
-
-    // Şehirleri getir (AJAX için)
-    [HttpGet]
-    public IActionResult GetCities(string country)
-    {
-        var cities = _hotelService.GetCities(country);
-        return Json(cities);
-    }
-
-    // Otel listesi - Tüm otelleri göster
-    public IActionResult List()
-    {
-        var hotels = _hotelService.GetAllHotels();
-        ViewBag.Search = new SearchViewModel();
-        return View(hotels);
-    }
-
-    // Otel listesi - Arama ile
-    [HttpPost]
-    public IActionResult List(SearchViewModel search)
-    {
-        var hotels = _hotelService.SearchHotels(search);
-        ViewBag.Search = search;
-        return View(hotels);
-    }
-
-    // Otel detay sayfası
-    public IActionResult Details(int id)
-    {
-        var hotel = _hotelService.GetHotelById(id);
-        if (hotel == null)
+        public HotelController()
         {
-            return NotFound();
+            _hotelService = HotelService.Instance;
         }
 
-        // Get ratings for this hotel
-        var ratings = _hotelService.GetHotelRatings(id);
-        ViewBag.Ratings = ratings;
-
-        return View(hotel);
-    }
-
-    // Oda seçimi
-    [HttpPost]
-    public IActionResult SelectRoom(int hotelId, int roomId, DateTime checkIn, DateTime checkOut, int guests)
-    {
-        var hotel = _hotelService.GetHotelById(hotelId);
-        if (hotel == null)
+        // Otel arama sayfası
+        public ActionResult Search()
         {
-            return NotFound();
+            ViewBag.Countries = _hotelService.GetCountries();
+            ViewBag.TotalHotels = _hotelService.GetAllHotels().Count;
+            return View(new SearchViewModel());
         }
 
-        var room = hotel.Rooms.FirstOrDefault(r => r.Id == roomId);
-        if (room == null)
+        // Şehirleri getir (AJAX için)
+        [HttpGet]
+        public JsonResult GetCities(string country)
         {
-            return NotFound();
+            var cities = _hotelService.GetCities(country);
+            return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
-        var nights = (checkOut - checkIn).Days;
-        var totalPrice = room.PricePerNight * nights;
-
-        var reservation = new Reservation
+        // Otel listesi - Tüm otelleri göster
+        public ActionResult List()
         {
-            HotelId = hotelId,
-            HotelName = hotel.Name,
-            RoomId = roomId,
-            RoomType = room.Type,
-            CheckInDate = checkIn,
-            CheckOutDate = checkOut,
-            NumberOfGuests = guests,
-            TotalPrice = totalPrice
-        };
+            var hotels = _hotelService.GetAllHotels();
+            ViewBag.Search = new SearchViewModel();
+            return View(hotels);
+        }
 
-        // Store in session or temp data
-        TempData["Reservation"] = System.Text.Json.JsonSerializer.Serialize(reservation);
+        // Otel listesi - Arama ile
+        [HttpPost]
+        public ActionResult List(SearchViewModel search)
+        {
+            var hotels = _hotelService.SearchHotels(search);
+            ViewBag.Search = search;
+            return View(hotels);
+        }
 
-        return RedirectToAction("Create", "Reservation");
+        // Otel detay sayfası
+        public ActionResult Details(int id)
+        {
+            var hotel = _hotelService.GetHotelById(id);
+            if (hotel == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Get ratings for this hotel
+            var ratings = _hotelService.GetHotelRatings(id);
+            ViewBag.Ratings = ratings;
+
+            return View(hotel);
+        }
+
+        // Oda seçimi
+        [HttpPost]
+        public ActionResult SelectRoom(int hotelId, int roomId, System.DateTime checkIn, System.DateTime checkOut, int guests)
+        {
+            var hotel = _hotelService.GetHotelById(hotelId);
+            if (hotel == null)
+            {
+                return HttpNotFound();
+            }
+
+            var room = hotel.Rooms.FirstOrDefault(r => r.Id == roomId);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
+
+            var nights = (checkOut - checkIn).Days;
+            var totalPrice = room.PricePerNight * nights;
+
+            var reservation = new Reservation
+            {
+                HotelId = hotelId,
+                HotelName = hotel.Name,
+                RoomId = roomId,
+                RoomType = room.Type,
+                CheckInDate = checkIn,
+                CheckOutDate = checkOut,
+                NumberOfGuests = guests,
+                TotalPrice = totalPrice
+            };
+
+            // Store in session or temp data
+            TempData["Reservation"] = Newtonsoft.Json.JsonConvert.SerializeObject(reservation);
+
+            return RedirectToAction("Create", "Reservation");
+        }
     }
 }
-
-

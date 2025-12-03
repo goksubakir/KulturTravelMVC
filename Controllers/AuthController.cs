@@ -1,39 +1,40 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
+using System.Web.SessionState;
 
-namespace KulturTravelMVC.Controllers;
-
-public class AuthController : Controller
+namespace KulturTravelMVC.Controllers
 {
-    public IActionResult Login()
+    public class AuthController : Controller
     {
-        return View();
-    }
+        public ActionResult Login()
+        {
+            return View();
+        }
 
-    [HttpPost]
-    public IActionResult Login(string email, string password)
-    {
-        // Check localStorage via JavaScript, but also set session
-        // This will be handled by JavaScript on client side
-        return View();
-    }
+        [HttpPost]
+        public ActionResult Login(string email, string password)
+        {
+            // Check localStorage via JavaScript, but also set session
+            // This will be handled by JavaScript on client side
+            return View();
+        }
 
-    public IActionResult Signup()
-    {
-        return View();
-    }
+        public ActionResult Signup()
+        {
+            return View();
+        }
 
-    [HttpPost]
-    public IActionResult SetSession(string email, string name)
-    {
-        HttpContext.Session.SetString("UserEmail", email);
-        HttpContext.Session.SetString("UserName", name);
-        return Json(new { success = true });
-    }
+        [HttpPost]
+        public JsonResult SetSession(string email, string name)
+        {
+            Session["UserEmail"] = email;
+            Session["UserName"] = name;
+            return Json(new { success = true });
+        }
 
-    public IActionResult Logout()
-    {
-        HttpContext.Session.Clear();
-        return RedirectToAction("Index", "Home");
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
-

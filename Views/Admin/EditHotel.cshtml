@@ -1,6 +1,6 @@
 @model KulturTravelMVC.Models.Hotel
 @{
-    ViewData["Title"] = "Otel Düzenle | Kültür Travel";
+    ViewBag.Title = "Otel Düzenle | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .edit-container {
             max-width: 800px;
@@ -54,40 +54,40 @@
     </header>
 
     <nav>
-        <a asp-controller="Admin" asp-action="Dashboard">Otel Yönetimi</a>
-        <a asp-controller="Admin" asp-action="Users">Kullanıcı Yönetimi</a>
-        <a asp-controller="Admin" asp-action="Logout">Çıkış Yap</a>
+        @Html.ActionLink("Otel Yönetimi", "Dashboard", "Admin")
+        @Html.ActionLink("Kullanıcı Yönetimi", "Users", "Admin")
+        @Html.ActionLink("Çıkış Yap", "Logout", "Admin")
     </nav>
 
     <div class="edit-container">
         <h2 style="color: #0077b6; margin-bottom: 30px;">Otel Düzenle</h2>
 
-        <form asp-action="UpdateHotel" method="post">
-            <input type="hidden" asp-for="Id" />
+        <form method="post" action="@Url.Action("UpdateHotel")">
+            <input type="hidden" name="Id" id="Id" />
 
             <div class="form-group">
                 <label>Otel Adı</label>
-                <input type="text" asp-for="Name" required />
+                <input type="text" name="Name" id="Name" required />
             </div>
 
             <div class="form-group">
                 <label>Fiyat (Gece)</label>
-                <input type="number" asp-for="PricePerNight" step="0.01" required />
+                <input type="number" name="PricePerNight" id="PricePerNight" step="0.01" required />
             </div>
 
             <div class="form-group">
                 <label>Açıklama</label>
-                <textarea asp-for="Description" rows="5"></textarea>
+                <textarea name="Description" id="Description" rows="5"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Görseller (virgülle ayırın)</label>
                 <input type="text" value="@string.Join(", ", Model.Images)" id="imagesInput" />
-                <input type="hidden" asp-for="Images" id="imagesHidden" />
+                <input type="hidden" name="Images" id="Images" id="imagesHidden" />
             </div>
 
             <button type="submit" class="btn-submit">Güncelle</button>
-            <a asp-action="Dashboard" style="margin-left: 15px; color: #0077b6;">İptal</a>
+            @Html.ActionLink("İptal", "Dashboard", "Admin", null, new { style = "margin-left: 15px; color: #0077b6;" })
         </form>
     </div>
 

@@ -1,6 +1,6 @@
 @model KulturTravelMVC.Models.SearchViewModel
 @{
-    ViewData["Title"] = "Otel Ara | Kültür Travel";
+    ViewBag.Title = "Otel Ara | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
     <style>
         .search-container {
             max-width: 800px;
@@ -67,87 +67,75 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search" class="active">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel", null, new { @class = "active" })
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <div class="search-container">
         <h2 style="text-align: center; color: #0077b6; margin-bottom: 30px;">Otel Ara</h2>
-        <form asp-action="List" method="post" class="search-form">
+        @using (Html.BeginForm("List", "Hotel", FormMethod.Post, new { @class = "search-form" }))
+        {
             <div class="form-group">
                 <label>Ülke</label>
-                <select asp-for="Country" id="countrySelect">
-                    <option value="">Tüm Ülkeler</option>
-                    @foreach (var country in ViewBag.Countries as List<string> ?? new List<string>())
-                    {
-                        <option value="@country">@country</option>
-                    }
-                </select>
+                @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.Countries as System.Collections.IEnumerable ?? new List<string>(), Model?.Country), "Tüm Ülkeler", new { @id = "countrySelect", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Şehir</label>
-                <select asp-for="City" id="citySelect">
+                <select id="citySelect" name="City">
                     <option value="">Tüm Şehirler</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Giriş Tarihi</label>
-                <input type="date" asp-for="CheckInDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                @Html.TextBoxFor(m => m.CheckInDate, new { @type = "date", @min = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Çıkış Tarihi</label>
-                <input type="date" asp-for="CheckOutDate" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                @Html.TextBoxFor(m => m.CheckOutDate, new { @type = "date", @min = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Kişi Sayısı</label>
-                <input type="number" asp-for="NumberOfGuests" min="1" max="10" value="2" />
+                @Html.TextBoxFor(m => m.NumberOfGuests, new { @type = "number", @min = "1", @max = "10", @value = "2", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Min Fiyat (₺)</label>
-                <input type="number" asp-for="MinPrice" min="0" />
+                @Html.TextBoxFor(m => m.MinPrice, new { @type = "number", @min = "0", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Max Fiyat (₺)</label>
-                <input type="number" asp-for="MaxPrice" min="0" />
+                @Html.TextBoxFor(m => m.MaxPrice, new { @type = "number", @min = "0", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Yıldız</label>
-                <select asp-for="StarRating">
-                    <option value="">Tümü</option>
-                    <option value="5">5 Yıldız</option>
-                    <option value="4">4 Yıldız</option>
-                    <option value="3">3 Yıldız</option>
-                </select>
+                @Html.DropDownListFor(m => m.StarRating, new SelectList(new[] { new { Value = "", Text = "Tümü" }, new { Value = "5", Text = "5 Yıldız" }, new { Value = "4", Text = "4 Yıldız" }, new { Value = "3", Text = "3 Yıldız" } }, "Value", "Text", Model?.StarRating), new { @class = "form-control" })
             </div>
             <button type="submit" class="search-btn">Otel Ara</button>
-        </form>
+        }
         <div style="text-align: center; margin-top: 20px;">
-            <a asp-action="List" style="color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;">
-                Tüm Otelleri Gör (@ViewBag.TotalHotels otel)
-            </a>
+            @Html.ActionLink("Tüm Otelleri Gör (" + ViewBag.TotalHotels + " otel)", "List", "Hotel", null, new { style = "color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;" })
         </div>
     </div>
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>
         <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
     <script>
         $(document).ready(function() {
             $('#countrySelect').change(function() {
                 var country = $(this).val();
                 if (country) {
-                    $.get('/Hotel/GetCities', { country: country }, function(cities) {
+                    $.get('@Url.Action("GetCities", "Hotel")', { country: country }, function(cities) {
                         $('#citySelect').empty();
                         $('#citySelect').append('<option value="">Tüm Şehirler</option>');
                         cities.forEach(function(city) {
@@ -163,5 +151,3 @@
     </script>
 </body>
 </html>
-
-

@@ -1,6 +1,6 @@
 @model List<KulturTravelMVC.Models.User>
 @{
-    ViewData["Title"] = "Kullanıcı Yönetimi | Kültür Travel";
+    ViewBag.Title = "Kullanıcı Yönetimi | Kültür Travel";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .admin-container {
             max-width: 1200px;
@@ -50,9 +50,9 @@
     </header>
 
     <nav>
-        <a asp-controller="Admin" asp-action="Dashboard">Otel Yönetimi</a>
-        <a asp-controller="Admin" asp-action="Users" class="active">Kullanıcı Yönetimi</a>
-        <a asp-controller="Admin" asp-action="Logout">Çıkış Yap</a>
+        @Html.ActionLink("Otel Yönetimi", "Dashboard", "Admin")
+        @Html.ActionLink("Kullanıcı Yönetimi", "Users", "Admin", null, new { @class = "active" })
+        @Html.ActionLink("Çıkış Yap", "Logout", "Admin")
     </nav>
 
     <div class="admin-container">
@@ -96,7 +96,7 @@
                             <td>@user.Role</td>
                             <td>@user.CreatedAt.ToString("dd MMMM yyyy")</td>
                             <td>
-                                <form asp-action="DeleteUser" method="post" style="display: inline;">
+                                <form method="post" action="@Url.Action("DeleteUser")" style="display: inline;">
                                     <input type="hidden" name="id" value="@user.Id" />
                                     <button type="submit" class="btn-delete" onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">Sil</button>
                                 </form>

@@ -1,57 +1,54 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 using KulturTravelMVC.Models;
 using KulturTravelMVC.Services;
 
-namespace KulturTravelMVC.Controllers;
-
-public class RatingController : Controller
+namespace KulturTravelMVC.Controllers
 {
-    private readonly HotelService _hotelService;
-    private readonly ILogger<RatingController> _logger;
-
-    public RatingController(HotelService hotelService, ILogger<RatingController> logger)
+    public class RatingController : Controller
     {
-        _hotelService = hotelService;
-        _logger = logger;
-    }
+        private readonly HotelService _hotelService;
 
-    // Yıldız verme
-    [HttpPost]
-    public IActionResult AddRating(int hotelId, int stars, string? comment)
-    {
-        if (!IsUserLoggedIn())
+        public RatingController()
         {
-            return Json(new { success = false, message = "Yıldız vermek için lütfen giriş yapın." });
+            _hotelService = HotelService.Instance;
         }
 
-        var rating = new Rating
+        // Yıldız verme
+        [HttpPost]
+        public JsonResult AddRating(int hotelId, int stars, string comment)
         {
-            HotelId = hotelId,
-            UserEmail = GetUserEmail(),
-            UserName = GetUserName(),
-            Stars = stars,
-            Comment = comment
-        };
+            if (!IsUserLoggedIn())
+            {
+                return Json(new { success = false, message = "Yıldız vermek için lütfen giriş yapın." });
+            }
 
-        _hotelService.AddRating(rating);
+            var rating = new Rating
+            {
+                HotelId = hotelId,
+                UserEmail = GetUserEmail(),
+                UserName = GetUserName(),
+                Stars = stars,
+                Comment = comment
+            };
 
-        return Json(new { success = true, message = "Değerlendirmeniz kaydedildi." });
-    }
+            _hotelService.AddRating(rating);
 
-    private bool IsUserLoggedIn()
-    {
-        return HttpContext.Session.GetString("UserEmail") != null;
-    }
+            return Json(new { success = true, message = "Değerlendirmeniz kaydedildi." });
+        }
 
-    private string GetUserEmail()
-    {
-        return HttpContext.Session.GetString("UserEmail") ?? string.Empty;
-    }
+        private bool IsUserLoggedIn()
+        {
+            return Session["UserEmail"] != null;
+        }
 
-    private string GetUserName()
-    {
-        return HttpContext.Session.GetString("UserName") ?? string.Empty;
+        private string GetUserEmail()
+        {
+            return Session["UserEmail"]?.ToString() ?? string.Empty;
+        }
+
+        private string GetUserName()
+        {
+            return Session["UserName"]?.ToString() ?? string.Empty;
+        }
     }
 }
-
-

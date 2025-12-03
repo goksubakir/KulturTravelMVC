@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "İletişim | Kültür Travel";
+    ViewBag.Title = "İletişim | Kültür Travel";
     Layout = null; // Kendi header/nav/footer yapısını kullanıyor
 }
 <!DOCTYPE html>
@@ -7,20 +7,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- GENEL CSS -->
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
 </head>
 <body>
     <header><h1>Bize Ulaşın</h1></header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact" class="active">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home", null, new { @class = "active" })
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <!-- 🔹 Üç kutu yan yana -->
@@ -75,8 +75,8 @@
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>
@@ -84,6 +84,6 @@
     </footer>
 
     <!-- CONTACT JS -->
-    <script src="~/js/contact.js" asp-append-version="true"></script>
+    <script src="@Url.Content("~/Scripts/contact.js")"></script>
 </body>
 </html>

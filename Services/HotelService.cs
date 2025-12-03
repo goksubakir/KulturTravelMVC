@@ -1,10 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using KulturTravelMVC.Models;
 
-namespace KulturTravelMVC.Services;
-
-public class HotelService
+namespace KulturTravelMVC.Services
 {
-    private static List<Hotel> _hotels = new()
+    public class HotelService
+    {
+        private static HotelService _instance;
+        private static readonly object _lock = new object();
+
+        public static HotelService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new HotelService();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        private HotelService()
+        {
+        }
+
+        private static List<Hotel> _hotels = new List<Hotel>
     {
         new Hotel
         {
@@ -16,7 +44,7 @@ public class HotelService
             Description = "Tarihi yarımadada lüks konaklama imkanı sunan 5 yıldızlı otel.",
             PricePerNight = 2500,
             StarRating = 5,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 1, HotelId = 1, Type = "Single", MaxGuests = 1, PricePerNight = 2000, Description = "Tek kişilik oda", Amenities = new List<string> { "WiFi", "TV", "Klima" } },
@@ -36,7 +64,7 @@ public class HotelService
             Description = "Peri bacaları manzaralı mağara oteli.",
             PricePerNight = 1800,
             StarRating = 4,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 4, HotelId = 2, Type = "Cave Room", MaxGuests = 2, PricePerNight = 1800, Description = "Geleneksel mağara odası", Amenities = new List<string> { "WiFi", "TV", "Şömine" } },
@@ -55,7 +83,7 @@ public class HotelService
             Description = "Denize sıfır 5 yıldızlı tatil köyü.",
             PricePerNight = 3200,
             StarRating = 5,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 6, HotelId = 3, Type = "Sea View", MaxGuests = 2, PricePerNight = 3200, Description = "Deniz manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon" } },
@@ -75,7 +103,7 @@ public class HotelService
             Description = "Marina manzaralı lüks butik otel, mavi yolculuk deneyimi.",
             PricePerNight = 2800,
             StarRating = 5,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 8, HotelId = 4, Type = "Marina View", MaxGuests = 2, PricePerNight = 2800, Description = "Marina manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon", "Minibar" } },
@@ -94,7 +122,7 @@ public class HotelService
             Description = "Göreme'nin en lüks mağara oteli, sıcak hava balonu manzarası.",
             PricePerNight = 3500,
             StarRating = 5,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 10, HotelId = 5, Type = "Cave Suite", MaxGuests = 2, PricePerNight = 3500, Description = "Peri bacası manzaralı mağara suit", Amenities = new List<string> { "WiFi", "TV", "Şömine", "Jakuzi", "Balkon" } },
@@ -113,7 +141,7 @@ public class HotelService
             Description = "Termal havuzlu, traverten manzaralı wellness oteli.",
             PricePerNight = 2200,
             StarRating = 4,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 12, HotelId = 6, Type = "Travertine View", MaxGuests = 2, PricePerNight = 2200, Description = "Traverten manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon" } },
@@ -133,7 +161,7 @@ public class HotelService
             Description = "Kanal manzaralı tarihi butik otel, şehir merkezinde.",
             PricePerNight = 4500,
             StarRating = 4,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 14, HotelId = 7, Type = "Canal View", MaxGuests = 2, PricePerNight = 4500, Description = "Kanal manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Heating", "Minibar" } },
@@ -152,7 +180,7 @@ public class HotelService
             Description = "Modern mimari tasarımlı, trend semtinde konumlanmış otel.",
             PricePerNight = 3200,
             StarRating = 4,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 16, HotelId = 8, Type = "Standard Room", MaxGuests = 2, PricePerNight = 3200, Description = "Modern tasarım oda", Amenities = new List<string> { "WiFi", "TV", "Heating", "Minibar" } },
@@ -171,7 +199,7 @@ public class HotelService
             Description = "Tarihi şehir merkezinde, Ortaçağ mimarisinde butik otel.",
             PricePerNight = 2800,
             StarRating = 3,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 18, HotelId = 9, Type = "Historic Room", MaxGuests = 2, PricePerNight = 2800, Description = "Tarihi atmosferde oda", Amenities = new List<string> { "WiFi", "TV", "Heating" } },
@@ -191,7 +219,7 @@ public class HotelService
             Description = "Kolezyum'a yürüme mesafesinde lüks 5 yıldızlı otel.",
             PricePerNight = 5200,
             StarRating = 5,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 20, HotelId = 10, Type = "Colosseum View", MaxGuests = 2, PricePerNight = 5200, Description = "Kolezyum manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -210,7 +238,7 @@ public class HotelService
             Description = "Grand Canal üzerinde, gondol manzaralı romantik otel.",
             PricePerNight = 6800,
             StarRating = 5,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 22, HotelId = 11, Type = "Canal Grande View", MaxGuests = 2, PricePerNight = 6800, Description = "Grand Canal manzaralı romantik oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -229,7 +257,7 @@ public class HotelService
             Description = "Duomo manzaralı, Rönesans döneminden ilham alan butik otel.",
             PricePerNight = 4800,
             StarRating = 4,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 24, HotelId = 12, Type = "Duomo View", MaxGuests = 2, PricePerNight = 4800, Description = "Duomo katedrali manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -249,7 +277,7 @@ public class HotelService
             Description = "7 yıldızlı efsane otel, muhteşem körfez manzarası.",
             PricePerNight = 15000,
             StarRating = 5,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 26, HotelId = 13, Type = "Deluxe Suite", MaxGuests = 2, PricePerNight = 15000, Description = "Geniş suit, körfez manzarası", Amenities = new List<string> { "WiFi", "TV", "AC", "Butler Service", "Private Lift" } },
@@ -268,7 +296,7 @@ public class HotelService
             Description = "Marina bölgesinde yüksek katlı modern otel, gökdelen manzarası.",
             PricePerNight = 5800,
             StarRating = 5,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 28, HotelId = 14, Type = "Marina View", MaxGuests = 2, PricePerNight = 5800, Description = "Marina ve şehir manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -287,7 +315,7 @@ public class HotelService
             Description = "Palmiye adasında, özel plajlı lüks tatil köyü.",
             PricePerNight = 7200,
             StarRating = 5,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 30, HotelId = 15, Type = "Beach View", MaxGuests = 2, PricePerNight = 7200, Description = "Deniz ve palmiye manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony", "Beach Access" } },
@@ -307,7 +335,7 @@ public class HotelService
             Description = "Shibuya'da modern Japon estetiği ile tasarlanmış otel.",
             PricePerNight = 6200,
             StarRating = 4,
-            Images = new List<string> { "/images/1.png", "/images/2.png" },
+            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 32, HotelId = 16, Type = "City View", MaxGuests = 2, PricePerNight = 6200, Description = "Tokyo manzaralı modern oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Tatami Area" } },
@@ -326,7 +354,7 @@ public class HotelService
             Description = "Geleneksel ryokan oteli, Gion bölgesinde, geishaların geçtiği sokaklarda.",
             PricePerNight = 8500,
             StarRating = 4,
-            Images = new List<string> { "/images/3.png", "/images/4.png" },
+            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 34, HotelId = 17, Type = "Traditional Room", MaxGuests = 2, PricePerNight = 8500, Description = "Geleneksel tatami odası", Amenities = new List<string> { "WiFi", "TV", "AC", "Futon Beds", "Private Onsen" } },
@@ -345,7 +373,7 @@ public class HotelService
             Description = "Şehir merkezinde, Dotonbori manzaralı modern iş oteli.",
             PricePerNight = 4800,
             StarRating = 4,
-            Images = new List<string> { "/images/5.png", "/images/6.png" },
+            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
             Rooms = new List<Room>
             {
                 new Room { Id = 36, HotelId = 18, Type = "Standard Business", MaxGuests = 2, PricePerNight = 4800, Description = "Modern iş odası", Amenities = new List<string> { "WiFi", "TV", "AC", "Work Desk", "Minibar" } },
@@ -356,8 +384,8 @@ public class HotelService
         }
     };
 
-    private static List<Reservation> _reservations = new();
-    private static List<Rating> _ratings = new();
+        private static List<Reservation> _reservations = new List<Reservation>();
+        private static List<Rating> _ratings = new List<Rating>();
     private static int _nextReservationId = 1;
     private static int _nextRatingId = 1;
 
@@ -366,10 +394,10 @@ public class HotelService
         return _hotels;
     }
 
-    public Hotel? GetHotelById(int id)
-    {
-        return _hotels.FirstOrDefault(h => h.Id == id);
-    }
+        public Hotel GetHotelById(int id)
+        {
+            return _hotels.FirstOrDefault(h => h.Id == id);
+        }
 
     public List<Hotel> SearchHotels(SearchViewModel search)
     {
@@ -420,10 +448,10 @@ public class HotelService
         return _reservations.Where(r => r.UserEmail == userEmail).ToList();
     }
 
-    public Reservation? GetReservationById(int id)
-    {
-        return _reservations.FirstOrDefault(r => r.Id == id);
-    }
+        public Reservation GetReservationById(int id)
+        {
+            return _reservations.FirstOrDefault(r => r.Id == id);
+        }
 
     public Rating AddRating(Rating rating)
     {
@@ -465,6 +493,7 @@ public class HotelService
         var hotel = GetHotelById(id);
         if (hotel != null)
             _hotels.Remove(hotel);
+        }
     }
 }
 

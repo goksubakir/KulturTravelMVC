@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Kültür Travel | Anasayfa";
+    ViewBag.Title = "Kültür Travel | Anasayfa";
     Layout = null; // Kendi header/nav/footer yapısını kullanıyor
 }
 <!DOCTYPE html>
@@ -7,12 +7,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- GENEL CSS -->
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
     <!-- INDEX SAYFASINA ÖZEL CSS -->
-    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/index.css")" />
 </head>
 <body>
     <header>
@@ -20,34 +20,34 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index" class="active">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home", null, new { @class = "active" })
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <section class="hero">
         <div class="slider">
-            <img src="~/images/1.png" class="active" alt="Slide 1">
-            <img src="~/images/2.png" alt="Slide 2">
-            <img src="~/images/3.png" alt="Slide 3">
-            <img src="~/images/4.png" alt="Slide 4">
-            <img src="~/images/5.png" alt="Slide 5">
-            <img src="~/images/6.png" alt="Slide 6">
+            <img src="@Url.Content("~/Content/images/1.png")" class="active" alt="Slide 1">
+            <img src="@Url.Content("~/Content/images/2.png")" alt="Slide 2">
+            <img src="@Url.Content("~/Content/images/3.png")" alt="Slide 3">
+            <img src="@Url.Content("~/Content/images/4.png")" alt="Slide 4">
+            <img src="@Url.Content("~/Content/images/5.png")" alt="Slide 5">
+            <img src="@Url.Content("~/Content/images/6.png")" alt="Slide 6">
         </div>
 
         <div class="hero-text">
             <h2>Hayalinizdeki Tatili Planlayın</h2>
             <p>The hotel you are looking for is just one click away!</p>
-            <a asp-controller="Hotel" asp-action="Search" style="background: #0077b6; color: white; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px;">Keşfetmeye Başla</a>
+            @Html.ActionLink("Keşfetmeye Başla", "Search", "Hotel", null, new { style = "background: #0077b6; color: white; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px;" })
         </div>
     </section>
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>
@@ -55,6 +55,6 @@
     </footer>
 
     <!-- INDEX JS -->
-    <script src="~/js/index.js" asp-append-version="true"></script>
+    <script src="@Url.Content("~/Scripts/index.js")"></script>
 </body>
 </html>

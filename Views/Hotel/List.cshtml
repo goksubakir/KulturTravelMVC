@@ -1,6 +1,6 @@
 @model List<KulturTravelMVC.Models.Hotel>
 @{
-    ViewData["Title"] = "Otel Listesi | Kültür Travel";
+    ViewBag.Title = "Otel Listesi | Kültür Travel";
     Layout = null;
     var search = ViewBag.Search as KulturTravelMVC.Models.SearchViewModel;
 }
@@ -9,9 +9,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .hotels-container {
             max-width: 1200px;
@@ -95,11 +95,11 @@
     </header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
-        <a asp-controller="Hotel" asp-action="Search" class="active">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
-        <a asp-controller="Home" asp-action="Contact">İletişim</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Anasayfa", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel", null, new { @class = "active" })
+        @Html.ActionLink("Hakkımızda", "About", "Home")
+        @Html.ActionLink("İletişim", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <div class="hotels-container">
@@ -109,7 +109,7 @@
         {
             <div class="no-results">
                 <h3>Aradığınız kriterlere uygun otel bulunamadı.</h3>
-                <a asp-action="Search" class="btn-details" style="margin-top: 20px;">Yeni Arama Yap</a>
+                @Html.ActionLink("Yeni Arama Yap", "Search", "Hotel", null, new { @class = "btn-details", style = "margin-top: 20px;" })
             </div>
         }
         else
@@ -129,7 +129,7 @@
                         <div class="price">
                             @hotel.PricePerNight.ToString("N0") <span>₺ / gece</span>
                         </div>
-                        <a asp-action="Details" asp-route-id="@hotel.Id" class="btn-details">Detayları Gör</a>
+                        @Html.ActionLink("Detayları Gör", "Details", "Hotel", new { id = hotel.Id }, new { @class = "btn-details" })
                     </div>
                 </div>
             }
@@ -138,8 +138,8 @@
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
-            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
             <a href="#">Gizlilik Politikası</a> |
             <a href="#">Instagram</a>
         </div>

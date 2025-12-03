@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Hakkımızda | Kültür Travel";
+    ViewBag.Title = "Hakkımızda | Kültür Travel";
     Layout = null; // Kendi header/nav/footer yapısını kullanıyor
 }
 <!DOCTYPE html>
@@ -7,25 +7,25 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- GENEL CSS -->
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
 </head>
 <body>
     <header><h1>About Us</h1></header>
 
     <nav>
-        <a asp-controller="Home" asp-action="Index">Home</a>
-        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
-        <a asp-controller="Home" asp-action="About" class="active">About Us</a>
-        <a asp-controller="Home" asp-action="Contact">Contact</a>
-        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+        @Html.ActionLink("Home", "Index", "Home")
+        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("About Us", "About", "Home", null, new { @class = "active" })
+        @Html.ActionLink("Contact", "Contact", "Home")
+        @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
     <!-- HERO BANNER -->
     <section style="position: relative; width: 100%; height: 70vh; overflow: hidden;">
-        <img src="~/images/3.png" alt="hotel view" 
+        <img src="@Url.Content("~/Content/images/3.png")" alt="hotel view" 
              style="width:100%; height:100%; object-fit:cover; filter: brightness(60%);" />
 
         <div style="
@@ -127,8 +127,8 @@
 
     <footer>
         <div class="footer-links">
-            <a asp-controller="Home" asp-action="About">About Us</a> |
-            <a asp-controller="Home" asp-action="Contact">Contact Us</a> |
+            @Html.ActionLink("About Us", "About", "Home") |
+            @Html.ActionLink("Contact Us", "Contact", "Home") |
             <a href="#">Privacy Policy</a> |
             <a href="#">Instagram</a>
         </div>

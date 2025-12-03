@@ -1,41 +1,34 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 using KulturTravelMVC.Models;
 
-namespace KulturTravelMVC.Controllers;
-
-public class HomeController : Controller
+namespace KulturTravelMVC.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        public ActionResult Index()
+        {
+            return View();
+        }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public ActionResult About()
+        {
+            return View();
+        }
 
-    public IActionResult About()
-    {
-        return View();
-    }
+        public ActionResult Contact()
+        {
+            return View();
+        }
 
-    public IActionResult Contact()
-    {
-        return View();
-    }
+        public ActionResult Privacy()
+        {
+            return View();
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public ActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

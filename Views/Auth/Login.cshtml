@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Giriş Yap | Kültür Travel";
+    ViewBag.Title = "Giriş Yap | Kültür Travel";
     Layout = null; // Login sayfası kendi layout'unu kullanıyor
 }
 <!DOCTYPE html>
@@ -7,9 +7,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/login.css")" />
 </head>
 <body>
     <div class="login-container">
@@ -26,14 +26,13 @@
                 <button type="submit">Giriş Yap</button>
             </form>
             <p class="small-text">
-                Hesabınız yok mu? <a asp-controller="Auth" asp-action="Signup">Kayıt Ol</a>
+                Hesabınız yok mu? @Html.ActionLink("Kayıt Ol", "Signup", "Auth")
             </p>
             <p class="small-text">
-                <a asp-controller="Home" asp-action="Index">Ana Sayfaya Dön</a>
+                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
             </p>
         </div>
     </div>
-    <script src="~/js/login.js" asp-append-version="true"></script>
+    <script src="@Url.Content("~/Scripts/login.js")"></script>
 </body>
 </html>
-
