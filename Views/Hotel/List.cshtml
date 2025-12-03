@@ -11,13 +11,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/Content/style.css"  />
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
     <style>
         .hotels-container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 20px;
         }
+
         .hotel-card {
             background: white;
             border-radius: 12px;
@@ -27,47 +28,57 @@
             display: flex;
             transition: transform 0.3s;
         }
-        .hotel-card:hover {
-            transform: translateY(-5px);
-        }
+
+            .hotel-card:hover {
+                transform: translateY(-5px);
+            }
+
         .hotel-image {
             width: 300px;
             height: 250px;
             object-fit: cover;
         }
+
         .hotel-info {
             padding: 25px;
             flex: 1;
         }
+
         .hotel-name {
             color: #0077b6;
             font-size: 24px;
             margin-bottom: 10px;
         }
+
         .hotel-location {
             color: #666;
             margin-bottom: 15px;
         }
+
         .hotel-rating {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 15px;
         }
+
         .stars {
             color: #ffd60a;
             font-size: 20px;
         }
+
         .price {
             font-size: 28px;
             color: #0077b6;
             font-weight: 600;
             margin: 15px 0;
         }
-        .price span {
-            font-size: 16px;
-            color: #666;
-        }
+
+            .price span {
+                font-size: 16px;
+                color: #666;
+            }
+
         .btn-details {
             background: #0077b6;
             color: white;
@@ -79,9 +90,11 @@
             font-weight: 600;
             transition: background 0.3s;
         }
-        .btn-details:hover {
-            background: #023e8a;
-        }
+
+            .btn-details:hover {
+                background: #023e8a;
+            }
+
         .no-results {
             text-align: center;
             padding: 50px;
@@ -104,7 +117,7 @@
 
     <div class="hotels-container">
         <h2 style="color: #0077b6; margin-bottom: 30px;">Bulunan Oteller (@Model.Count)</h2>
-        
+
         @if (Model.Count == 0)
         {
             <div class="no-results">
@@ -114,10 +127,12 @@
         }
         else
         {
-            @foreach (var hotel in Model)
+            /* DÜZELTME BURADA: @foreach yerine foreach yazıldı çünkü else zaten kod bloğu */
+            foreach (var hotel in Model)
             {
                 <div class="hotel-card">
-                    <img src="@(hotel.Images.FirstOrDefault() ?? "/images/1.png")" alt="@hotel.Name" class="hotel-image" />
+                    <img src="@(hotel.Images != null && hotel.Images.FirstOrDefault() != null ? hotel.Images.FirstOrDefault() : Url.Content("~/Content/images/default-hotel.jpg"))" alt="@hotel.Name" class="hotel-image" />
+
                     <div class="hotel-info">
                         <h3 class="hotel-name">@hotel.Name</h3>
                         <p class="hotel-location">📍 @hotel.City, @hotel.Country</p>
@@ -147,4 +162,3 @@
     </footer>
 </body>
 </html>
-

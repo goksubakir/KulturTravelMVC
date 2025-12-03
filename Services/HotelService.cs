@@ -404,10 +404,10 @@ namespace KulturTravelMVC.Services
         var hotels = _hotels.AsQueryable();
 
         if (!string.IsNullOrEmpty(search.Country))
-            hotels = hotels.Where(h => h.Country.Contains(search.Country, StringComparison.OrdinalIgnoreCase));
+            hotels = hotels.Where(h => h.Country != null && h.Country.IndexOf(search.Country, StringComparison.OrdinalIgnoreCase) >= 0);
 
         if (!string.IsNullOrEmpty(search.City))
-            hotels = hotels.Where(h => h.City.Contains(search.City, StringComparison.OrdinalIgnoreCase));
+            hotels = hotels.Where(h => h.City != null && h.City.IndexOf(search.City, StringComparison.OrdinalIgnoreCase) >= 0);
 
         if (search.MinPrice.HasValue)
             hotels = hotels.Where(h => h.PricePerNight >= search.MinPrice.Value);
@@ -426,7 +426,7 @@ namespace KulturTravelMVC.Services
         return _hotels.Select(h => h.Country).Distinct().OrderBy(c => c).ToList();
     }
 
-    public List<string> GetCities(string? country = null)
+    public List<string> GetCities(string country = "")
     {
         var hotels = _hotels.AsQueryable();
         if (!string.IsNullOrEmpty(country))

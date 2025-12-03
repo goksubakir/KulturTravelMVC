@@ -20,30 +20,36 @@
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
         .search-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
+
         .form-group {
             display: flex;
             flex-direction: column;
         }
-        .form-group label {
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #0077b6;
-        }
-        .form-group input, .form-group select {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #0077b6;
-        }
+
+            .form-group label {
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #0077b6;
+            }
+
+            .form-group input, .form-group select {
+                padding: 12px;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-size: 15px;
+            }
+
+                .form-group input:focus, .form-group select:focus {
+                    outline: none;
+                    border-color: #0077b6;
+                }
+
         .search-btn {
             grid-column: 1 / -1;
             background: #0077b6;
@@ -56,9 +62,10 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-        .search-btn:hover {
-            background: #023e8a;
-        }
+
+            .search-btn:hover {
+                background: #023e8a;
+            }
     </style>
 </head>
 <body>
@@ -80,7 +87,7 @@
         {
             <div class="form-group">
                 <label>Ülke</label>
-                @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.Countries as System.Collections.IEnumerable ?? new List<string>(), Model?.Country), "Tüm Ülkeler", new { @id = "countrySelect", @class = "form-control" })
+                @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.Countries as System.Collections.IEnumerable ?? new List<string>(), (Model != null ? Model.Country : null)), "Tüm Ülkeler", new { @id = "countrySelect", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label>Şehir</label>
@@ -110,12 +117,16 @@
             </div>
             <div class="form-group">
                 <label>Yıldız</label>
-                @Html.DropDownListFor(m => m.StarRating, new SelectList(new[] { new { Value = "", Text = "Tümü" }, new { Value = "5", Text = "5 Yıldız" }, new { Value = "4", Text = "4 Yıldız" }, new { Value = "3", Text = "3 Yıldız" } }, "Value", "Text", Model?.StarRating), new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.StarRating, new SelectList(new[] { new { Value = "", Text = "Tümü" }, new { Value = "5", Text = "5 Yıldız" }, new { Value = "4", Text = "4 Yıldız" }, new { Value = "3", Text = "3 Yıldız" } }, "Value", "Text", (Model != null ? Model.StarRating : null)), new { @class = "form-control" })
             </div>
             <button type="submit" class="search-btn">Otel Ara</button>
         }
+
         <div style="text-align: center; margin-top: 20px;">
-            @Html.ActionLink("Tüm Otelleri Gör (" + ViewBag.TotalHotels + " otel)", "List", "Hotel", null, new { style = "color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;" })
+            <a href="@Url.Action("List", "Hotel")"
+               style="color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;">
+                Tüm Otelleri Gör (@(ViewBag.TotalHotels != null ? ViewBag.TotalHotels : 0) otel)
+            </a>
         </div>
     </div>
 
