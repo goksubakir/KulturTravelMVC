@@ -157,4 +157,3 @@ Proje ilk çalıştırıldığında otomatik oluşturulan test kullanıcıları:
 ## İletişim
 
 Eğer hala sorun yaşıyorsan, hata mesajlarını ekran görüntüsü ile paylaş.
-
