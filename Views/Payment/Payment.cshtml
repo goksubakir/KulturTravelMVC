@@ -1,0 +1,147 @@
+@model KulturTravelMVC.Models.Payment
+@{
+    ViewData["Title"] = "Ödeme | Kültür Travel";
+    Layout = null;
+    var reservation = ViewBag.Reservation as KulturTravelMVC.Models.Reservation;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .payment-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .payment-summary {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+        }
+        .btn-submit {
+            background: #0077b6;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <div class="payment-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Ödeme</h2>
+        
+        @if (reservation != null)
+        {
+            <div class="payment-summary">
+                <h3>@reservation.HotelName</h3>
+                <p><strong>Toplam Tutar:</strong> <span style="font-size: 28px; color: #0077b6; font-weight: 600;">@reservation.TotalPrice.ToString("N0") ₺</span></p>
+            </div>
+        }
+
+        <form asp-action="ProcessPayment" method="post">
+            <input type="hidden" asp-for="ReservationId" />
+            <input type="hidden" asp-for="Amount" />
+
+            <div class="form-group">
+                <label>Kart Numarası</label>
+                <input type="text" asp-for="CardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required />
+            </div>
+
+            <div class="form-group">
+                <label>Kart Üzerindeki İsim</label>
+                <input type="text" asp-for="CardHolderName" placeholder="Ad Soyad" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Son Kullanma Tarihi</label>
+                    <input type="text" asp-for="ExpiryDate" placeholder="MM/YY" maxlength="5" required />
+                </div>
+                <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" asp-for="CVV" placeholder="123" maxlength="3" required />
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Ödemeyi Tamamla</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        // Format card number
+        document.getElementById('CardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formatted;
+        });
+
+        // Format expiry date
+        document.getElementById('ExpiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
+
+

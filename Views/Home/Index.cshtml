@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Kültür Travel | Anasayfa";
+    Layout = null; // Kendi header/nav/footer yapısını kullanıyor
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- GENEL CSS -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <!-- INDEX SAYFASINA ÖZEL CSS -->
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index" class="active">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <section class="hero">
+        <div class="slider">
+            <img src="~/images/1.png" class="active" alt="Slide 1">
+            <img src="~/images/2.png" alt="Slide 2">
+            <img src="~/images/3.png" alt="Slide 3">
+            <img src="~/images/4.png" alt="Slide 4">
+            <img src="~/images/5.png" alt="Slide 5">
+            <img src="~/images/6.png" alt="Slide 6">
+        </div>
+
+        <div class="hero-text">
+            <h2>Hayalinizdeki Tatili Planlayın</h2>
+            <p>The hotel you are looking for is just one click away!</p>
+            <a asp-controller="Hotel" asp-action="Search" style="background: #0077b6; color: white; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px;">Keşfetmeye Başla</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <!-- INDEX JS -->
+    <script src="~/js/index.js" asp-append-version="true"></script>
+</body>
+</html>

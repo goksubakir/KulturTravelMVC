@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Hakkımızda | Kültür Travel";
+    Layout = null; // Kendi header/nav/footer yapısını kullanıyor
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- GENEL CSS -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <header><h1>About Us</h1></header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About" class="active">About Us</a>
+        <a asp-controller="Home" asp-action="Contact">Contact</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <section style="position: relative; width: 100%; height: 70vh; overflow: hidden;">
+        <img src="~/images/3.png" alt="hotel view" 
+             style="width:100%; height:100%; object-fit:cover; filter: brightness(60%);" />
+
+        <div style="
+          position:absolute; 
+          top:50%; 
+          left:50%; 
+          transform:translate(-50%, -50%); 
+          display:flex; 
+          flex-direction:column; 
+          align-items:center; 
+          justify-content:center;
+          text-align:center; 
+          color:white;
+          width:100%;
+          padding:0 20px;
+        ">
+          <h1 style="font-size:2.8rem; font-weight:600; margin:0; letter-spacing:1px;">
+            The Address of Luxury Accommodation with Kültür Travel
+          </h1>
+          <p style="font-size:1.2rem; margin-top:20px; max-width:700px; line-height:1.8; opacity:0.95;">
+            We bring together the best hotels at the most affordable prices, turning your trip into an unforgettable experience.
+          </p>
+        </div>
+    </section>
+
+    <!-- WHO ARE WE -->
+    <section style="padding:60px 20px; max-width:1000px; margin:auto; text-align:center;">
+        <h2 style="color:#0077b6; font-size:2rem; margin-bottom:20px;">Who Are We?</h2>
+        <p style="line-height:1.9; font-size:1.1rem; color:#333;">
+          <strong>Kültür Travel</strong> is a digital tourism platform that redefines the modern concept of travel.  
+          It offers not only accommodation but also <em>comfort, safety, and prestige</em>.  
+          By simplifying hotel booking processes, we aim to provide our customers with a fast, reliable, and enjoyable experience.  
+          Born in the heart of Istanbul, our brand continues to grow with the vision of offering world-class service to every guest.
+        </p>
+    </section>
+
+    <!-- VISION & MISSION -->
+    <section style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; padding:40px 20px;">
+        <div style="
+          flex:1; min-width:300px; max-width:400px; 
+          background:white; border-radius:12px; padding:35px; 
+          box-shadow:0 8px 20px rgba(0,0,0,0.1); 
+          border-top:5px solid #0077b6;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        "
+        onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 25px rgba(0,0,0,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';">
+            <h3 style="color:#0077b6; text-align:center; font-size:1.6rem;">🌍 Our Vision</h3>
+            <p style="text-align:center; line-height:1.7; margin-top:15px;">
+                To be a pioneer in the digital transformation of the tourism industry, ensuring that every traveler  
+                enjoys a <strong>comfortable, safe, and personalized</strong> holiday experience.
+            </p>
+        </div>
+
+        <div style="
+          flex:1; min-width:300px; max-width:400px; 
+          background:white; border-radius:12px; padding:35px; 
+          box-shadow:0 8px 20px rgba(0,0,0,0.1); 
+          border-top:5px solid #0096c7;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        "
+        onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 25px rgba(0,0,0,0.15)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.1)';">
+            <h3 style="color:#0096c7; text-align:center; font-size:1.6rem;">✨ Our Mission</h3>
+            <p style="text-align:center; line-height:1.7; margin-top:15px;">
+                To offer hotel options suitable for every budget on a single platform,  
+                to keep guest satisfaction at the highest level, and  
+                to <strong>make travel accessible for everyone.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section style="background:#f4faff; padding:70px 20px; text-align:center;">
+        <h2 style="color:#0077b6; font-size:2rem;">Why Kültür Travel?</h2>
+        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px; margin-top:50px;">
+            <div style="background:white; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); width:250px; padding:30px; transition:all 0.3s ease;"
+                 onmouseover="this.style.transform='scale(1.05)'"
+                 onmouseout="this.style.transform='scale(1)'">
+                <h3 style="color:#0077b6;">🏨 Exclusive Hotels</h3>
+                <p style="margin-top:10px;">Carefully selected accommodation options with a guarantee of quality worldwide.</p>
+            </div>
+
+            <div style="background:white; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); width:250px; padding:30px; transition:all 0.3s ease;"
+                 onmouseover="this.style.transform='scale(1.05)'"
+                 onmouseout="this.style.transform='scale(1)'">
+                <h3 style="color:#0096c7;">💬 24/7 Support</h3>
+                <p style="margin-top:10px;">A professional support team by your side every step of your journey.</p>
+            </div>
+
+            <div style="background:white; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); width:250px; padding:30px; transition:all 0.3s ease;"
+                 onmouseover="this.style.transform='scale(1.05)'"
+                 onmouseout="this.style.transform='scale(1)'">
+                <h3 style="color:#00b4d8;">⭐ Customer Satisfaction</h3>
+                <p style="margin-top:10px;">The first choice of thousands of travelers with a 98% satisfaction rate.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">About Us</a> |
+            <a asp-controller="Home" asp-action="Contact">Contact Us</a> |
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

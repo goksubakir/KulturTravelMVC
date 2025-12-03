@@ -1,0 +1,149 @@
+@model KulturTravelMVC.Models.Reservation
+@{
+    ViewData["Title"] = "Rezervasyon | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .reservation-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .reservation-summary {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .btn-submit {
+            background: #0077b6;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <div class="reservation-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Rezervasyon Bilgileri</h2>
+        
+        <div class="reservation-summary">
+            <h3>@Model.HotelName</h3>
+            <p><strong>Oda Tipi:</strong> @Model.RoomType</p>
+            <p><strong>Giriş:</strong> @Model.CheckInDate.ToString("dd MMMM yyyy")</p>
+            <p><strong>Çıkış:</strong> @Model.CheckOutDate.ToString("dd MMMM yyyy")</p>
+            <p><strong>Kişi Sayısı:</strong> @Model.NumberOfGuests</p>
+            <p><strong>Toplam Fiyat:</strong> <span style="font-size: 24px; color: #0077b6; font-weight: 600;">@Model.TotalPrice.ToString("N0") ₺</span></p>
+        </div>
+
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="HotelId" />
+            <input type="hidden" asp-for="HotelName" />
+            <input type="hidden" asp-for="RoomId" />
+            <input type="hidden" asp-for="RoomType" />
+            <input type="hidden" asp-for="CheckInDate" />
+            <input type="hidden" asp-for="CheckOutDate" />
+            <input type="hidden" asp-for="NumberOfGuests" />
+            <input type="hidden" asp-for="TotalPrice" />
+
+            <div class="form-group">
+                <label>Ad Soyad</label>
+                <input type="text" id="userName" required />
+            </div>
+            <div class="form-group">
+                <label>E-posta</label>
+                <input type="email" id="userEmail" required />
+            </div>
+
+            <button type="submit" class="btn-submit">Rezervasyonu Onayla ve Ödemeye Geç</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        // Get user info from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (user.fullname) {
+                document.getElementById('userName').value = user.fullname;
+            }
+            if (user.email) {
+                document.getElementById('userEmail').value = user.email;
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            
+            // Add hidden inputs
+            const nameInput = document.createElement('input');
+            nameInput.type = 'hidden';
+            nameInput.name = 'UserName';
+            nameInput.value = userName;
+            this.appendChild(nameInput);
+
+            const emailInput = document.createElement('input');
+            emailInput.type = 'hidden';
+            emailInput.name = 'UserEmail';
+            emailInput.value = userEmail;
+            this.appendChild(emailInput);
+        });
+    </script>
+</body>
+</html>
+
+

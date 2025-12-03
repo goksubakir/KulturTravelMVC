@@ -1,0 +1,167 @@
+@model KulturTravelMVC.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Otel Ara | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .search-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0077b6;
+        }
+        .search-btn {
+            grid-column: 1 / -1;
+            background: #0077b6;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-btn:hover {
+            background: #023e8a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Anasayfa</a>
+        <a asp-controller="Hotel" asp-action="Search" class="active">Otel Ara</a>
+        <a asp-controller="Home" asp-action="About">Hakkımızda</a>
+        <a asp-controller="Home" asp-action="Contact">İletişim</a>
+        <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+    </nav>
+
+    <div class="search-container">
+        <h2 style="text-align: center; color: #0077b6; margin-bottom: 30px;">Otel Ara</h2>
+        <form asp-action="List" method="post" class="search-form">
+            <div class="form-group">
+                <label>Ülke</label>
+                <select asp-for="Country" id="countrySelect">
+                    <option value="">Tüm Ülkeler</option>
+                    @foreach (var country in ViewBag.Countries as List<string> ?? new List<string>())
+                    {
+                        <option value="@country">@country</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Şehir</label>
+                <select asp-for="City" id="citySelect">
+                    <option value="">Tüm Şehirler</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Giriş Tarihi</label>
+                <input type="date" asp-for="CheckInDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="form-group">
+                <label>Çıkış Tarihi</label>
+                <input type="date" asp-for="CheckOutDate" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="form-group">
+                <label>Kişi Sayısı</label>
+                <input type="number" asp-for="NumberOfGuests" min="1" max="10" value="2" />
+            </div>
+            <div class="form-group">
+                <label>Min Fiyat (₺)</label>
+                <input type="number" asp-for="MinPrice" min="0" />
+            </div>
+            <div class="form-group">
+                <label>Max Fiyat (₺)</label>
+                <input type="number" asp-for="MaxPrice" min="0" />
+            </div>
+            <div class="form-group">
+                <label>Yıldız</label>
+                <select asp-for="StarRating">
+                    <option value="">Tümü</option>
+                    <option value="5">5 Yıldız</option>
+                    <option value="4">4 Yıldız</option>
+                    <option value="3">3 Yıldız</option>
+                </select>
+            </div>
+            <button type="submit" class="search-btn">Otel Ara</button>
+        </form>
+        <div style="text-align: center; margin-top: 20px;">
+            <a asp-action="List" style="color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;">
+                Tüm Otelleri Gör (@ViewBag.TotalHotels otel)
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a asp-controller="Home" asp-action="About">Hakkımızda</a> |
+            <a asp-controller="Home" asp-action="Contact">Bize Ulaşın</a> |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#countrySelect').change(function() {
+                var country = $(this).val();
+                if (country) {
+                    $.get('/Hotel/GetCities', { country: country }, function(cities) {
+                        $('#citySelect').empty();
+                        $('#citySelect').append('<option value="">Tüm Şehirler</option>');
+                        cities.forEach(function(city) {
+                            $('#citySelect').append('<option value="' + city + '">' + city + '</option>');
+                        });
+                    });
+                } else {
+                    $('#citySelect').empty();
+                    $('#citySelect').append('<option value="">Tüm Şehirler</option>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

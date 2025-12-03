@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Kayıt Ol | Kültür Travel";
+    Layout = null; // Signup sayfası kendi layout'unu kullanıyor
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-box">
+            <h2>Kayıt Ol</h2>
+            <p class="subtitle">Yeni hesap oluşturun</p>
+            <form onsubmit="return signupUser()">
+                <label for="fullname">Ad Soyad:</label>
+                <input type="text" id="fullname" required />
+
+                <label for="email">E-posta:</label>
+                <input type="email" id="email" required />
+
+                <label for="password">Şifre:</label>
+                <input type="password" id="password" required />
+
+                <label for="confirmPassword">Şifre Tekrar:</label>
+                <input type="password" id="confirmPassword" required />
+
+                <button type="submit">Kayıt Ol</button>
+            </form>
+            <p class="small-text">
+                Zaten hesabınız var mı? <a asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+            </p>
+            <p class="small-text">
+                <a asp-controller="Home" asp-action="Index">Ana Sayfaya Dön</a>
+            </p>
+        </div>
+    </div>
+    <script src="~/js/signup.js" asp-append-version="true"></script>
+</body>
+</html>
+

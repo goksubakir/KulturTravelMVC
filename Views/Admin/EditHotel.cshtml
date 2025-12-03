@@ -1,0 +1,103 @@
+@model KulturTravelMVC.Models.Hotel
+@{
+    ViewData["Title"] = "Otel Düzenle | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <style>
+        .edit-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .btn-submit {
+            background: #0077b6;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kültür Travel - Admin Paneli</h1>
+    </header>
+
+    <nav>
+        <a asp-controller="Admin" asp-action="Dashboard">Otel Yönetimi</a>
+        <a asp-controller="Admin" asp-action="Users">Kullanıcı Yönetimi</a>
+        <a asp-controller="Admin" asp-action="Logout">Çıkış Yap</a>
+    </nav>
+
+    <div class="edit-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Otel Düzenle</h2>
+
+        <form asp-action="UpdateHotel" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label>Otel Adı</label>
+                <input type="text" asp-for="Name" required />
+            </div>
+
+            <div class="form-group">
+                <label>Fiyat (Gece)</label>
+                <input type="number" asp-for="PricePerNight" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+                <label>Açıklama</label>
+                <textarea asp-for="Description" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Görseller (virgülle ayırın)</label>
+                <input type="text" value="@string.Join(", ", Model.Images)" id="imagesInput" />
+                <input type="hidden" asp-for="Images" id="imagesHidden" />
+            </div>
+
+            <button type="submit" class="btn-submit">Güncelle</button>
+            <a asp-action="Dashboard" style="margin-left: 15px; color: #0077b6;">İptal</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('imagesInput').addEventListener('change', function() {
+            const images = this.value.split(',').map(img => img.trim()).filter(img => img);
+            document.getElementById('imagesHidden').value = JSON.stringify(images);
+        });
+    </script>
+</body>
+</html>
+
+
