@@ -1,0 +1,59 @@
+@model KulturTravelMVC.Models.LoginViewModel
+@{
+    ViewBag.Title = "Giriş Yap | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/wwwroot/css/login.css" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Hoş Geldiniz</h2>
+            <p class="subtitle">Hesabınıza giriş yapın</p>
+            @using (Html.BeginForm("Login", "Auth", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @for = "loginEmail" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "loginEmail", @type = "email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @for = "loginPassword" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "loginPassword" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            }
+            <p class="small-text">
+                Hesabınız yok mu? @Html.ActionLink("Kayıt Ol", "Signup", "Auth")
+            </p>
+            <p class="small-text">
+                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
+            </p>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/wwwroot/js/login.js"></script>
+</body>
+</html>

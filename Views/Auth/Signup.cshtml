@@ -1,0 +1,64 @@
+@model KulturTravelMVC.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Kayıt Ol | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/wwwroot/css/signup.css" />
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-box">
+            <h2>Kayıt Ol</h2>
+            <p class="subtitle">Yeni hesap oluşturun</p>
+            @using (Html.BeginForm("Signup", "Auth", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FullName, new { @for = "fullname" })
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @id = "fullname" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @for = "email" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "email", @type = "email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @for = "password" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = "password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @for = "confirmPassword" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @id = "confirmPassword" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+            }
+            <p class="small-text">
+                Zaten hesabınız var mı? @Html.ActionLink("Giriş Yap", "Login", "Auth")
+            </p>
+            <p class="small-text">
+                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
+            </p>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/wwwroot/js/signup.js"></script>
+</body>
+</html>
