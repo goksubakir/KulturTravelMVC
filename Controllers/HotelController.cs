@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Web.Mvc;
 using KulturTravelMVC.Models;
 using KulturTravelMVC.Services;
@@ -72,7 +73,18 @@ namespace KulturTravelMVC.Controllers
                 return HttpNotFound();
             }
 
-            var room = hotel.Rooms.FirstOrDefault(r => r.Id == roomId);
+            Room room = null;
+            if (hotel.Rooms != null)
+            {
+                foreach (var r in hotel.Rooms)
+                {
+                    if (r.Id == roomId)
+                    {
+                        room = r;
+                        break;
+                    }
+                }
+            }
             if (room == null)
             {
                 return HttpNotFound();

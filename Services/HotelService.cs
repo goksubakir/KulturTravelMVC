@@ -44,7 +44,7 @@ namespace KulturTravelMVC.Services
             Description = "Tarihi yarımadada lüks konaklama imkanı sunan 5 yıldızlı otel.",
             PricePerNight = 2500,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel1.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 1, HotelId = 1, Type = "Single", MaxGuests = 1, PricePerNight = 2000, Description = "Tek kişilik oda", Amenities = new List<string> { "WiFi", "TV", "Klima" } },
@@ -64,7 +64,7 @@ namespace KulturTravelMVC.Services
             Description = "Peri bacaları manzaralı mağara oteli.",
             PricePerNight = 1800,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel2.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 4, HotelId = 2, Type = "Cave Room", MaxGuests = 2, PricePerNight = 1800, Description = "Geleneksel mağara odası", Amenities = new List<string> { "WiFi", "TV", "Şömine" } },
@@ -83,7 +83,7 @@ namespace KulturTravelMVC.Services
             Description = "Denize sıfır 5 yıldızlı tatil köyü.",
             PricePerNight = 3200,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel3.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 6, HotelId = 3, Type = "Sea View", MaxGuests = 2, PricePerNight = 3200, Description = "Deniz manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon" } },
@@ -103,7 +103,7 @@ namespace KulturTravelMVC.Services
             Description = "Marina manzaralı lüks butik otel, mavi yolculuk deneyimi.",
             PricePerNight = 2800,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel4.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 8, HotelId = 4, Type = "Marina View", MaxGuests = 2, PricePerNight = 2800, Description = "Marina manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon", "Minibar" } },
@@ -122,7 +122,7 @@ namespace KulturTravelMVC.Services
             Description = "Göreme'nin en lüks mağara oteli, sıcak hava balonu manzarası.",
             PricePerNight = 3500,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel5.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 10, HotelId = 5, Type = "Cave Suite", MaxGuests = 2, PricePerNight = 3500, Description = "Peri bacası manzaralı mağara suit", Amenities = new List<string> { "WiFi", "TV", "Şömine", "Jakuzi", "Balkon" } },
@@ -141,7 +141,7 @@ namespace KulturTravelMVC.Services
             Description = "Termal havuzlu, traverten manzaralı wellness oteli.",
             PricePerNight = 2200,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel6.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 12, HotelId = 6, Type = "Travertine View", MaxGuests = 2, PricePerNight = 2200, Description = "Traverten manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Klima", "Balkon" } },
@@ -161,7 +161,7 @@ namespace KulturTravelMVC.Services
             Description = "Kanal manzaralı tarihi butik otel, şehir merkezinde.",
             PricePerNight = 4500,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel7.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 14, HotelId = 7, Type = "Canal View", MaxGuests = 2, PricePerNight = 4500, Description = "Kanal manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "Heating", "Minibar" } },
@@ -180,7 +180,7 @@ namespace KulturTravelMVC.Services
             Description = "Modern mimari tasarımlı, trend semtinde konumlanmış otel.",
             PricePerNight = 3200,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel8.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 16, HotelId = 8, Type = "Standard Room", MaxGuests = 2, PricePerNight = 3200, Description = "Modern tasarım oda", Amenities = new List<string> { "WiFi", "TV", "Heating", "Minibar" } },
@@ -199,7 +199,7 @@ namespace KulturTravelMVC.Services
             Description = "Tarihi şehir merkezinde, Ortaçağ mimarisinde butik otel.",
             PricePerNight = 2800,
             StarRating = 3,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel9.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 18, HotelId = 9, Type = "Historic Room", MaxGuests = 2, PricePerNight = 2800, Description = "Tarihi atmosferde oda", Amenities = new List<string> { "WiFi", "TV", "Heating" } },
@@ -219,7 +219,7 @@ namespace KulturTravelMVC.Services
             Description = "Kolezyum'a yürüme mesafesinde lüks 5 yıldızlı otel.",
             PricePerNight = 5200,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel10.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 20, HotelId = 10, Type = "Colosseum View", MaxGuests = 2, PricePerNight = 5200, Description = "Kolezyum manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -238,7 +238,7 @@ namespace KulturTravelMVC.Services
             Description = "Grand Canal üzerinde, gondol manzaralı romantik otel.",
             PricePerNight = 6800,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel11.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 22, HotelId = 11, Type = "Canal Grande View", MaxGuests = 2, PricePerNight = 6800, Description = "Grand Canal manzaralı romantik oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -257,7 +257,7 @@ namespace KulturTravelMVC.Services
             Description = "Duomo manzaralı, Rönesans döneminden ilham alan butik otel.",
             PricePerNight = 4800,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel12.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 24, HotelId = 12, Type = "Duomo View", MaxGuests = 2, PricePerNight = 4800, Description = "Duomo katedrali manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -277,7 +277,7 @@ namespace KulturTravelMVC.Services
             Description = "7 yıldızlı efsane otel, muhteşem körfez manzarası.",
             PricePerNight = 15000,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel13.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 26, HotelId = 13, Type = "Deluxe Suite", MaxGuests = 2, PricePerNight = 15000, Description = "Geniş suit, körfez manzarası", Amenities = new List<string> { "WiFi", "TV", "AC", "Butler Service", "Private Lift" } },
@@ -296,7 +296,7 @@ namespace KulturTravelMVC.Services
             Description = "Marina bölgesinde yüksek katlı modern otel, gökdelen manzarası.",
             PricePerNight = 5800,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel14.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 28, HotelId = 14, Type = "Marina View", MaxGuests = 2, PricePerNight = 5800, Description = "Marina ve şehir manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony" } },
@@ -315,7 +315,7 @@ namespace KulturTravelMVC.Services
             Description = "Palmiye adasında, özel plajlı lüks tatil köyü.",
             PricePerNight = 7200,
             StarRating = 5,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel15.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 30, HotelId = 15, Type = "Beach View", MaxGuests = 2, PricePerNight = 7200, Description = "Deniz ve palmiye manzaralı oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Balcony", "Beach Access" } },
@@ -335,7 +335,7 @@ namespace KulturTravelMVC.Services
             Description = "Shibuya'da modern Japon estetiği ile tasarlanmış otel.",
             PricePerNight = 6200,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/1.png", "/Content/images/2.png" },
+            Images = new List<string> { "/Content/images/otel16.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 32, HotelId = 16, Type = "City View", MaxGuests = 2, PricePerNight = 6200, Description = "Tokyo manzaralı modern oda", Amenities = new List<string> { "WiFi", "TV", "AC", "Minibar", "Tatami Area" } },
@@ -354,7 +354,7 @@ namespace KulturTravelMVC.Services
             Description = "Geleneksel ryokan oteli, Gion bölgesinde, geishaların geçtiği sokaklarda.",
             PricePerNight = 8500,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/3.png", "/Content/images/4.png" },
+            Images = new List<string> { "/Content/images/otel17.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 34, HotelId = 17, Type = "Traditional Room", MaxGuests = 2, PricePerNight = 8500, Description = "Geleneksel tatami odası", Amenities = new List<string> { "WiFi", "TV", "AC", "Futon Beds", "Private Onsen" } },
@@ -373,7 +373,7 @@ namespace KulturTravelMVC.Services
             Description = "Şehir merkezinde, Dotonbori manzaralı modern iş oteli.",
             PricePerNight = 4800,
             StarRating = 4,
-            Images = new List<string> { "/Content/images/5.png", "/Content/images/6.png" },
+            Images = new List<string> { "/Content/images/otel18.jpg" },
             Rooms = new List<Room>
             {
                 new Room { Id = 36, HotelId = 18, Type = "Standard Business", MaxGuests = 2, PricePerNight = 4800, Description = "Modern iş odası", Amenities = new List<string> { "WiFi", "TV", "AC", "Work Desk", "Minibar" } },
@@ -404,10 +404,10 @@ namespace KulturTravelMVC.Services
         var hotels = _hotels.AsQueryable();
 
         if (!string.IsNullOrEmpty(search.Country))
-            hotels = hotels.Where(h => h.Country.Contains(search.Country, StringComparison.OrdinalIgnoreCase));
+            hotels = hotels.Where(h => h.Country != null && h.Country.IndexOf(search.Country, StringComparison.OrdinalIgnoreCase) >= 0);
 
         if (!string.IsNullOrEmpty(search.City))
-            hotels = hotels.Where(h => h.City.Contains(search.City, StringComparison.OrdinalIgnoreCase));
+            hotels = hotels.Where(h => h.City != null && h.City.IndexOf(search.City, StringComparison.OrdinalIgnoreCase) >= 0);
 
         if (search.MinPrice.HasValue)
             hotels = hotels.Where(h => h.PricePerNight >= search.MinPrice.Value);
@@ -426,7 +426,7 @@ namespace KulturTravelMVC.Services
         return _hotels.Select(h => h.Country).Distinct().OrderBy(c => c).ToList();
     }
 
-    public List<string> GetCities(string? country = null)
+    public List<string> GetCities(string country = "")
     {
         var hotels = _hotels.AsQueryable();
         if (!string.IsNullOrEmpty(country))

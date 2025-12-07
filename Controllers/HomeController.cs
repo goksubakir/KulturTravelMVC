@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Web.Mvc;
 using KulturTravelMVC.Models;
 
@@ -28,7 +27,8 @@ namespace KulturTravelMVC.Controllers
 
         public ActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var requestId = System.Guid.NewGuid().ToString();
+            return View(new ErrorViewModel { RequestId = requestId });
         }
     }
 }

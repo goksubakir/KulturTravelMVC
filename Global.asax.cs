@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -14,6 +15,13 @@ namespace KulturTravelMVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            // UTF-8 encoding ayarı
+            Response.ContentEncoding = Encoding.UTF8;
+            Response.Charset = "utf-8";
         }
     }
 }

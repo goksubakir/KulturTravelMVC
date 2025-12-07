@@ -9,55 +9,280 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
     <style>
-        .search-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        * {
+            box-sizing: border-box;
         }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .search-wrapper {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            padding: 45px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0077b6, #0096c7, #00b4d8, #90e0ef);
+            animation: shimmer 3s infinite;
+        }
+
+        @@keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-header h2 {
+            color: #0077b6;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
         .search-form {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
         }
+
         .form-group {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
+
         .form-group label {
-            margin-bottom: 8px;
-            font-weight: 500;
+            margin-bottom: 10px;
+            font-weight: 600;
             color: #0077b6;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .form-group input, .form-group select {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+
+        .form-group label::before {
+            content: '📍';
+            font-size: 1.1rem;
+        }
+
+        .form-group:nth-child(1) label::before { content: '🌍'; }
+        .form-group:nth-child(2) label::before { content: '🏙️'; }
+        .form-group:nth-child(3) label::before { content: '📅'; }
+        .form-group:nth-child(4) label::before { content: '📅'; }
+        .form-group:nth-child(5) label::before { content: '👥'; }
+        .form-group:nth-child(6) label::before { content: '💰'; }
+        .form-group:nth-child(7) label::before { content: '💰'; }
+        .form-group:nth-child(8) label::before { content: '⭐'; }
+
+        .form-group input,
+        .form-group select {
+            padding: 14px 16px;
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
             font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff;
+            color: #333;
         }
-        .form-group input:focus, .form-group select:focus {
+
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #0077b6;
+            box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.1);
+            transform: translateY(-2px);
         }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #0096c7;
+        }
+
         .search-btn {
             grid-column: 1 / -1;
-            background: #0077b6;
+            background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%);
             color: white;
-            padding: 15px;
+            padding: 18px 40px;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 14px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 20px rgba(0, 119, 182, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
         }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .search-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
         .search-btn:hover {
-            background: #023e8a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 119, 182, 0.4);
+        }
+
+        .search-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .search-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .view-all-link {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e7ff;
+        }
+
+        .view-all-link a {
+            display: inline-block;
+            color: #0077b6;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 14px 35px;
+            border: 2px solid #0077b6;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-all-link a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0077b6 0%, #0096c7 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .view-all-link a:hover {
+            color: white;
+            border-color: #0096c7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3);
+        }
+
+        .view-all-link a:hover::before {
+            left: 0;
+        }
+
+        .hotel-count {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd60a 0%, #ffc300 100%);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            box-shadow: 0 4px 10px rgba(255, 214, 10, 0.3);
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .search-container {
+                padding: 30px 20px;
+            }
+
+            .search-header h2 {
+                font-size: 2rem;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Loading animation for form */
+        .form-group input:focus,
+        .form-group select:focus {
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(0, 119, 182, 0.15);
+            }
         }
     </style>
 </head>
@@ -74,48 +299,67 @@
         @Html.ActionLink("Giriş Yap", "Login", "Auth")
     </nav>
 
-    <div class="search-container">
-        <h2 style="text-align: center; color: #0077b6; margin-bottom: 30px;">Otel Ara</h2>
-        @using (Html.BeginForm("List", "Hotel", FormMethod.Post, new { @class = "search-form" }))
-        {
-            <div class="form-group">
-                <label>Ülke</label>
-                @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.Countries as System.Collections.IEnumerable ?? new List<string>(), Model?.Country), "Tüm Ülkeler", new { @id = "countrySelect", @class = "form-control" })
+    <div class="search-wrapper">
+        <div class="search-container">
+            <div class="search-header">
+                <h2>Otel Ara</h2>
+                <p>Hayalinizdeki tatili bulun</p>
             </div>
-            <div class="form-group">
-                <label>Şehir</label>
-                <select id="citySelect" name="City">
-                    <option value="">Tüm Şehirler</option>
-                </select>
+            
+            @using (Html.BeginForm("List", "Hotel", FormMethod.Post, new { @class = "search-form" }))
+            {
+                <div class="form-group">
+                    <label>Ülke</label>
+                    @Html.DropDownListFor(m => m.Country, new SelectList(ViewBag.Countries as System.Collections.IEnumerable ?? new List<string>(), (Model != null ? Model.Country : null)), "Tüm Ülkeler", new { @id = "countrySelect", @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Şehir</label>
+                    <select id="citySelect" name="City" class="form-control">
+                        <option value="">Tüm Şehirler</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Giriş Tarihi</label>
+                    @Html.TextBoxFor(m => m.CheckInDate, new { @type = "date", @min = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Çıkış Tarihi</label>
+                    @Html.TextBoxFor(m => m.CheckOutDate, new { @type = "date", @min = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Kişi Sayısı</label>
+                    @Html.TextBoxFor(m => m.NumberOfGuests, new { @type = "number", @min = "1", @max = "10", @value = "2", @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Min Fiyat (₺)</label>
+                    @Html.TextBoxFor(m => m.MinPrice, new { @type = "number", @min = "0", @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Max Fiyat (₺)</label>
+                    @Html.TextBoxFor(m => m.MaxPrice, new { @type = "number", @min = "0", @class = "form-control" })
+                </div>
+                
+                <div class="form-group">
+                    <label>Yıldız</label>
+                    @Html.DropDownListFor(m => m.StarRating, new SelectList(new[] { new { Value = "", Text = "Tümü" }, new { Value = "5", Text = "5 Yıldız" }, new { Value = "4", Text = "4 Yıldız" }, new { Value = "3", Text = "3 Yıldız" } }, "Value", "Text", (Model != null ? Model.StarRating : null)), new { @class = "form-control" })
+                </div>
+                
+                <button type="submit" class="search-btn">
+                    <span>🔍 Otel Ara</span>
+                </button>
+            }
+
+            <div class="view-all-link">
+                <a href="@Url.Action("List", "Hotel")">
+                    Tüm Otelleri Gör <span class="hotel-count">@(ViewBag.TotalHotels != null ? ViewBag.TotalHotels : 0) otel</span>
+                </a>
             </div>
-            <div class="form-group">
-                <label>Giriş Tarihi</label>
-                @Html.TextBoxFor(m => m.CheckInDate, new { @type = "date", @min = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Çıkış Tarihi</label>
-                @Html.TextBoxFor(m => m.CheckOutDate, new { @type = "date", @min = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Kişi Sayısı</label>
-                @Html.TextBoxFor(m => m.NumberOfGuests, new { @type = "number", @min = "1", @max = "10", @value = "2", @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Min Fiyat (₺)</label>
-                @Html.TextBoxFor(m => m.MinPrice, new { @type = "number", @min = "0", @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Max Fiyat (₺)</label>
-                @Html.TextBoxFor(m => m.MaxPrice, new { @type = "number", @min = "0", @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Yıldız</label>
-                @Html.DropDownListFor(m => m.StarRating, new SelectList(new[] { new { Value = "", Text = "Tümü" }, new { Value = "5", Text = "5 Yıldız" }, new { Value = "4", Text = "4 Yıldız" }, new { Value = "3", Text = "3 Yıldız" } }, "Value", "Text", Model?.StarRating), new { @class = "form-control" })
-            </div>
-            <button type="submit" class="search-btn">Otel Ara</button>
-        }
-        <div style="text-align: center; margin-top: 20px;">
-            @Html.ActionLink("Tüm Otelleri Gör (" + ViewBag.TotalHotels + " otel)", "List", "Hotel", null, new { style = "color: #0077b6; text-decoration: none; font-weight: 600; padding: 10px 20px; border: 2px solid #0077b6; border-radius: 8px; display: inline-block;" })
         </div>
     </div>
 
