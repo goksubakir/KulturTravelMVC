@@ -125,20 +125,44 @@
     </footer>
 
     <script>
-        // Format card number
-        document.getElementById('CardNumber').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
-            e.target.value = formatted;
-        });
-
-        // Format expiry date
-        document.getElementById('ExpiryDate').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        // Save reservation data to sessionStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (reservation != null)
+            {
+                <text>
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const reservationData = {
+                    HotelId: @reservation.HotelId,
+                    HotelName: '@reservation.HotelName',
+                    RoomId: @reservation.RoomId,
+                    RoomType: '@reservation.RoomType',
+                    CheckInDate: '@reservation.CheckInDate.ToString("yyyy-MM-dd")',
+                    CheckOutDate: '@reservation.CheckOutDate.ToString("yyyy-MM-dd")',
+                    NumberOfGuests: @reservation.NumberOfGuests,
+                    TotalPrice: @reservation.TotalPrice,
+                    UserName: user.fullname || '@reservation.UserName',
+                    UserEmail: user.email || '@reservation.UserEmail',
+                    Status: 'Pending'
+                };
+                sessionStorage.setItem('currentReservation', JSON.stringify(reservationData));
+                </text>
             }
-            e.target.value = value;
+
+            // Format card number
+            document.getElementById('CardNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s/g, '');
+                let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formatted;
+            });
+
+            // Format expiry date
+            document.getElementById('ExpiryDate').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
         });
     </script>
 </body>

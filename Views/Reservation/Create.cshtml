@@ -123,6 +123,22 @@
             if (user.email) {
                 document.getElementById('userEmail').value = user.email;
             }
+
+            // Save reservation data to sessionStorage for later use
+            const reservationData = {
+                HotelId: @Model.HotelId,
+                HotelName: '@Model.HotelName',
+                RoomId: @Model.RoomId,
+                RoomType: '@Model.RoomType',
+                CheckInDate: '@Model.CheckInDate.ToString("yyyy-MM-dd")',
+                CheckOutDate: '@Model.CheckOutDate.ToString("yyyy-MM-dd")',
+                NumberOfGuests: @Model.NumberOfGuests,
+                TotalPrice: @Model.TotalPrice,
+                UserName: user.fullname || '',
+                UserEmail: user.email || '',
+                Status: 'Pending'
+            };
+            sessionStorage.setItem('currentReservation', JSON.stringify(reservationData));
         });
 
         document.querySelector('form').addEventListener('submit', function(e) {
@@ -141,6 +157,12 @@
             emailInput.name = 'UserEmail';
             emailInput.value = userEmail;
             this.appendChild(emailInput);
+
+            // Update sessionStorage with user info
+            const reservationData = JSON.parse(sessionStorage.getItem('currentReservation') || '{}');
+            reservationData.UserName = userName;
+            reservationData.UserEmail = userEmail;
+            sessionStorage.setItem('currentReservation', JSON.stringify(reservationData));
         });
     </script>
 </body>

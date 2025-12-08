@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Web.Mvc;
 using KulturTravelMVC.Models;
 using KulturTravelMVC.Services;
@@ -63,14 +64,17 @@ namespace KulturTravelMVC.Controllers
         // Kullanıcının rezervasyonları
         public ActionResult MyReservations()
         {
-            if (!IsUserLoggedIn())
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
-            // Get user email from session (handled by JS)
-            var userEmail = GetUserEmail();
-            var reservations = _hotelService.GetUserReservations(userEmail);
+            // Check localStorage via JavaScript - if not logged in, redirect
+            // For now, return empty list - database bağlanınca doldurulacak
+            var reservations = new List<Reservation>();
+            
+            // Database bağlanınca bu kısım aktif olacak:
+            // if (!IsUserLoggedIn())
+            // {
+            //     return RedirectToAction("Login", "Auth");
+            // }
+            // var userEmail = GetUserEmail();
+            // var reservations = _hotelService.GetUserReservations(userEmail);
             
             return View(reservations);
         }

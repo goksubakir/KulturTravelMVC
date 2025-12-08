@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Kültür Travel | Anasayfa";
-    Layout = null; // Kendi header/nav/footer yapısını kullanıyor
+    ViewBag.Title = "Kültür Travel | Home";
+    Layout = null; // Uses its own header/nav/footer
 }
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,11 +20,11 @@
     </header>
 
     <nav>
-        @Html.ActionLink("Anasayfa", "Index", "Home", null, new { @class = "active" })
-        @Html.ActionLink("Otel Ara", "Search", "Hotel")
-        @Html.ActionLink("Hakkımızda", "About", "Home")
-        @Html.ActionLink("İletişim", "Contact", "Home")
-        @Html.ActionLink("Giriş Yap", "Login", "Auth")
+        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "active" })
+        @Html.ActionLink("Search Hotels", "Search", "Hotel")
+        @Html.ActionLink("About", "About", "Home")
+        @Html.ActionLink("Contact", "Contact", "Home")
+        @Html.ActionLink("Log In", "Login", "Auth")
     </nav>
 
     <section class="hero">
@@ -38,20 +38,20 @@
         </div>
 
         <div class="hero-text">
-            <h2>Hayalinizdeki Tatili Planlayın</h2>
-            <p>The hotel you are looking for is just one click away!</p>
-            @Html.ActionLink("Keşfetmeye Başla", "Search", "Hotel", null, new { style = "background: #0077b6; color: white; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px;" })
+            <h2>Plan Your Dream Getaway</h2>
+            <p>The hotel you’re looking for is just one click away.</p>
+            @Html.ActionLink("Start Exploring", "Search", "Hotel", null, new { @class = "primary-cta" })
         </div>
     </section>
 
     <footer>
         <div class="footer-links">
-            @Html.ActionLink("Hakkımızda", "About", "Home") |
-            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
-            <a href="#">Gizlilik Politikası</a> |
+            @Html.ActionLink("About Us", "About", "Home") |
+            @Html.ActionLink("Contact Us", "Contact", "Home") |
+            <a href="#">Privacy Policy</a> |
             <a href="#">Instagram</a>
         </div>
-        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+        <p>&copy; 2025 Kültür Travel Portal. All Rights Reserved.</p>
     </footer>
 
     <!-- INDEX JS -->

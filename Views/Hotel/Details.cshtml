@@ -258,6 +258,78 @@
             box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.1);
         }
 
+        .guest-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .guest-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-weight: 600;
+            color: #0077b6;
+            margin-bottom: 6px;
+        }
+
+        .guest-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 6px;
+        }
+
+        .guest-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guest-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #0077b6;
+            background: white;
+            color: #0077b6;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .guest-btn:hover {
+            background: #0077b6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+        }
+
+        .guest-count {
+            min-width: 28px;
+            text-align: center;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .guest-total {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .guest-note {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
         .room-card {
             border: 3px solid #e0e7ff;
             border-radius: 16px;
@@ -591,11 +663,11 @@
     </header>
 
     <nav>
-        @Html.ActionLink("Anasayfa", "Index", "Home")
-        @Html.ActionLink("Otel Ara", "Search", "Hotel")
-        @Html.ActionLink("Hakkımızda", "About", "Home")
-        @Html.ActionLink("İletişim", "Contact", "Home")
-        @Html.ActionLink("Giriş Yap", "Login", "Auth")
+        @Html.ActionLink("Home", "Index", "Home")
+        @Html.ActionLink("Search Hotels", "Search", "Hotel")
+        @Html.ActionLink("About", "About", "Home")
+        @Html.ActionLink("Contact", "Contact", "Home")
+        @Html.ActionLink("Log In", "Login", "Auth")
     </nav>
 
     <div class="hotel-details">
@@ -653,8 +725,32 @@
                         <input type="date" name="checkOut" id="checkOut" required min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
                     </div>
                     <div class="date-input-group">
-                        <label>👥 Number of Guests</label>
-                        <input type="number" name="guests" id="guests" min="1" max="10" value="2" required />
+                        <label>👥 Guests</label>
+                        <div class="guest-counter">
+                            <div style="width:100%;">
+                                <div class="guest-row">
+                                    <span>Adults</span>
+                                    <div class="guest-controls">
+                                        <button type="button" class="guest-btn" onclick="changeGuests('adult', -1)">-</button>
+                                        <span class="guest-count" id="adultCount">1</span>
+                                        <button type="button" class="guest-btn" onclick="changeGuests('adult', 1)">+</button>
+                                    </div>
+                                </div>
+                                <div class="guest-row">
+                                    <span>Children</span>
+                                    <div class="guest-controls">
+                                        <button type="button" class="guest-btn" onclick="changeGuests('child', -1)">-</button>
+                                        <span class="guest-count" id="childCount">0</span>
+                                        <button type="button" class="guest-btn" onclick="changeGuests('child', 1)">+</button>
+                                    </div>
+                                </div>
+                                <div class="guest-total" id="guestTotalText">Total: 1 guest</div>
+                                <div class="guest-note">Children are charged at 50% of the adult rate.</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="guests" id="guests" value="1" required />
+                        <input type="hidden" name="adultGuests" id="adultGuests" value="1" />
+                        <input type="hidden" name="childGuests" id="childGuests" value="0" />
                     </div>
                 </div>
                 
@@ -719,7 +815,7 @@
                                 <strong class="rating-user">@rating.UserName</strong>
                                 <span class="rating-stars" data-stars="@rating.Stars"></span>
                             </div>
-                            if (!string.IsNullOrEmpty(rating.Comment))
+                            @if (!string.IsNullOrEmpty(rating.Comment))
                             {
                                 <p class="rating-comment">@rating.Comment</p>
                             }
@@ -737,9 +833,9 @@
 
     <footer>
         <div class="footer-links">
-            @Html.ActionLink("Hakkımızda", "About", "Home") |
-            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
-            <a href="#">Gizlilik Politikası</a> |
+            @Html.ActionLink("About Us", "About", "Home") |
+            @Html.ActionLink("Contact Us", "Contact", "Home") |
+            <a href="#">Privacy Policy</a> |
             <a href="#">Instagram</a>
         </div>
         <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
@@ -902,6 +998,40 @@
                 }
             });
         }
+
+        // Konuk sayısı artır/azalt
+        let adultCount = 1;
+        let childCount = 0;
+        const maxGuests = 10;
+        const minAdult = 1;
+
+        function updateGuestTotal() {
+            const total = adultCount + childCount;
+            $('#guests').val(total);
+            $('#adultCount').text(adultCount);
+            $('#childCount').text(childCount);
+            $('#adultGuests').val(adultCount);
+            $('#childGuests').val(childCount);
+            $('#guestTotalText').text(`Total: ${total} guest${total > 1 ? 's' : ''}`);
+        }
+
+        function changeGuests(type, delta) {
+            if (type === 'adult') {
+                const next = adultCount + delta;
+                if (next < minAdult) return;
+                if (next + childCount > maxGuests) return;
+                adultCount = next;
+            } else {
+                const next = childCount + delta;
+                if (next < 0) return;
+                if (adultCount + next > maxGuests) return;
+                childCount = next;
+            }
+            updateGuestTotal();
+        }
+
+        // Başlangıç değeri
+        updateGuestTotal();
     </script>
 </body>
 </html>

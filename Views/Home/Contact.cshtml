@@ -1,9 +1,9 @@
 @{
-    ViewBag.Title = "İletişim | Kültür Travel";
-    Layout = null; // Kendi header/nav/footer yapısını kullanıyor
+    ViewBag.Title = "Contact | Kültür Travel";
+    Layout = null; // Uses its own header/nav/footer
 }
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,55 +13,55 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" />
 </head>
 <body>
-    <header><h1>Bize Ulaşın</h1></header>
+    <header><h1>Contact Us</h1></header>
 
     <nav>
-        @Html.ActionLink("Anasayfa", "Index", "Home")
-        @Html.ActionLink("Otel Ara", "Search", "Hotel")
-        @Html.ActionLink("Hakkımızda", "About", "Home")
-        @Html.ActionLink("İletişim", "Contact", "Home", null, new { @class = "active" })
-        @Html.ActionLink("Giriş Yap", "Login", "Auth")
+        @Html.ActionLink("Home", "Index", "Home")
+        @Html.ActionLink("Search Hotels", "Search", "Hotel")
+        @Html.ActionLink("About", "About", "Home")
+        @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "active" })
+        @Html.ActionLink("Log In", "Login", "Auth")
     </nav>
 
     <!-- 🔹 Üç kutu yan yana -->
     <section style="padding: 40px; display: flex; justify-content: center; gap: 40px; margin: 0 auto; flex-wrap: wrap;">
 
         <!-- SOL: FORM -->
-        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 10px; padding: 25px 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 14px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
             <form onsubmit="return sendMessage()">
-                <label>Ad Soyad:</label><br />
+                <label>Full Name</label><br />
                 <input type="text" id="name" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;" /><br /><br />
 
-                <label>E-posta:</label><br />
+                <label>Email</label><br />
                 <input type="email" id="email" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;" /><br /><br />
 
-                <label>Mesajınız:</label><br />
+                <label>Your Message</label><br />
                 <textarea id="message" rows="5" required style="width:100%; padding:10px; border:1px solid #ccc; border-radius:5px;"></textarea><br /><br />
 
                 <button type="submit"
-                        style="background-color:#0077b6; color:white; border:none; padding:10px; border-radius:5px; width:100%; cursor:pointer;">
-                    Gönder
+                        style="background: linear-gradient(135deg, #0077b6, #00b4d8); color:white; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer; font-weight:600; box-shadow:0 8px 20px rgba(0, 119, 182, 0.25);">
+                    Send Message
                 </button>
             </form>
         </div>
 
         <!-- ORTA: ADRES -->
-        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 10px; padding: 25px 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-            <h2 style="color:#0077b6; margin-bottom:20px;">İletişim Bilgilerimiz</h2>
+        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 14px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
+            <h2 style="color:#0077b6; margin-bottom:20px;">Contact Information</h2>
 
-            <p><strong>📍 Adres:</strong><br>
-               E5 Karayolu Üzeri Ataköy Yerleşkesi,<br>
-               Ataköy 7-8-9-10. Kısım, 34158 Bakırköy / İstanbul</p>
+            <p><strong>📍 Address:</strong><br>
+               E5 Highway Ataköy Campus,<br>
+               Ataköy 7-8-9-10 District, 34158 Bakırköy / Istanbul</p>
 
-            <p><strong>📞 Telefon:</strong><br>+90 555 123 4567</p>
+            <p><strong>📞 Phone:</strong><br>+90 555 123 4567</p>
 
-            <p><strong>✉️ E-posta:</strong><br>info@travelportal.com</p>
+            <p><strong>✉️ Email:</strong><br>info@travelportal.com</p>
 
-            <p><strong>🕒 Çalışma Saatleri:</strong><br>Pazartesi - Cumartesi | 09:00 - 18:00</p>
+            <p><strong>🕒 Working Hours:</strong><br>Monday - Saturday | 09:00 - 18:00</p>
         </div>
 
         <!-- SAĞ: HARİTA -->
-        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 10px; padding: 0; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <div style="max-width: 400px; background: #fff; border: 2px solid #0077b6; border-radius: 14px; padding: 0; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3011.5516795222225!2d28.829560476113677!3d40.99129682047023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa35ee1fdc1b1%3A0x658a212e6b4359b5!2zVC5DLiDEsHN0YW5idWwgS8O8bHTDvHIgw5xuaXZlcnNpdGVzaQ!5e0!3m2!1str!2str!4v1761379556149!5m2!1str!2str"
                 width="100%"
@@ -75,9 +75,9 @@
 
     <footer>
         <div class="footer-links">
-            @Html.ActionLink("Hakkımızda", "About", "Home") |
-            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
-            <a href="#">Gizlilik Politikası</a> |
+            @Html.ActionLink("About Us", "About", "Home") |
+            @Html.ActionLink("Contact Us", "Contact", "Home") |
+            <a href="#">Privacy Policy</a> |
             <a href="#">Instagram</a>
         </div>
         <p>&copy; 2025 Travel Portal.</p>

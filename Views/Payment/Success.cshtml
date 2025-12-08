@@ -74,6 +74,48 @@
         </div>
         <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
     </footer>
+
+    <script>
+        // Save reservation to localStorage when payment is successful
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get reservation data from sessionStorage (set during reservation creation)
+            const reservationData = sessionStorage.getItem('currentReservation');
+            if (reservationData) {
+                try {
+                    const reservation = JSON.parse(reservationData);
+                    
+                    // Update status to Confirmed
+                    reservation.Status = 'Confirmed';
+                    reservation.CreatedAt = new Date().toISOString();
+                    
+                    // Get existing reservations from localStorage
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    const userEmail = user.email || '';
+                    const storageKey = 'reservations_' + userEmail;
+                    
+                    let reservations = [];
+                    const existingReservations = localStorage.getItem(storageKey);
+                    if (existingReservations) {
+                        reservations = JSON.parse(existingReservations);
+                    }
+                    
+                    // Add new reservation
+                    reservation.Id = reservations.length > 0 ? Math.max(...reservations.map(r => r.Id || 0)) + 1 : 1;
+                    reservations.push(reservation);
+                    
+                    // Save back to localStorage
+                    localStorage.setItem(storageKey, JSON.stringify(reservations));
+                    
+                    // Clear sessionStorage
+                    sessionStorage.removeItem('currentReservation');
+                    
+                    console.log('Reservation saved to localStorage:', reservation);
+                } catch (e) {
+                    console.error('Error saving reservation:', e);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 

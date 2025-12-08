@@ -65,7 +65,7 @@ namespace KulturTravelMVC.Controllers
 
         // Oda seçimi
         [HttpPost]
-        public ActionResult SelectRoom(int hotelId, int roomId, System.DateTime checkIn, System.DateTime checkOut, int guests)
+        public ActionResult SelectRoom(int hotelId, int roomId, System.DateTime checkIn, System.DateTime checkOut, int guests, int adultGuests = 1, int childGuests = 0)
         {
             var hotel = _hotelService.GetHotelById(hotelId);
             if (hotel == null)
@@ -91,7 +91,14 @@ namespace KulturTravelMVC.Controllers
             }
 
             var nights = (checkOut - checkIn).Days;
-            var totalPrice = room.PricePerNight * nights;
+            if (nights <= 0)
+            {
+                return RedirectToAction("Details", new { id = hotelId });
+            }
+
+            // Fiyat hesaplama: yetişkin tam, çocuk yarım fiyat
+            var perNightPrice = (adultGuests * room.PricePerNight) + (childGuests * (room.PricePerNight * 0.5m));
+            var totalPrice = perNightPrice * nights;
 
             var reservation = new Reservation
             {

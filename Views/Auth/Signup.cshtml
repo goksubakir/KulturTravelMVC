@@ -1,9 +1,9 @@
 @{
-    ViewBag.Title = "Kayıt Ol | Kültür Travel";
-    Layout = null; // Signup sayfası kendi layout'unu kullanıyor
+    ViewBag.Title = "Create Account | Kültür Travel";
+    Layout = null; // Signup page uses its own layout
 }
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,28 +14,29 @@
 <body>
     <div class="signup-container">
         <div class="signup-box">
-            <h2>Kayıt Ol</h2>
-            <p class="subtitle">Yeni hesap oluşturun</p>
+            <div class="badge">Kültür Travel</div>
+            <h2>Create Account</h2>
+            <p class="subtitle">Join and start exploring</p>
             <form onsubmit="return signupUser()">
-                <label for="fullname">Ad Soyad:</label>
+                <label for="fullname">Full Name</label>
                 <input type="text" id="fullname" required />
 
-                <label for="email">E-posta:</label>
+                <label for="email">Email</label>
                 <input type="email" id="email" required />
 
-                <label for="password">Şifre:</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" required />
 
-                <label for="confirmPassword">Şifre Tekrar:</label>
+                <label for="confirmPassword">Confirm Password</label>
                 <input type="password" id="confirmPassword" required />
 
-                <button type="submit">Kayıt Ol</button>
+                <button type="submit">Sign Up</button>
             </form>
             <p class="small-text">
-                Zaten hesabınız var mı? @Html.ActionLink("Giriş Yap", "Login", "Auth")
+                Already have an account? @Html.ActionLink("Sign In", "Login", "Auth")
             </p>
             <p class="small-text">
-                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
+                @Html.ActionLink("Back to Home", "Index", "Home")
             </p>
         </div>
     </div>

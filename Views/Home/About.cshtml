@@ -1,9 +1,9 @@
 @{
-    ViewBag.Title = "Hakkımızda | Kültür Travel";
-    Layout = null; // Kendi header/nav/footer yapısını kullanıyor
+    ViewBag.Title = "About | Kültür Travel";
+    Layout = null; // Uses its own header/nav/footer
 }
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,10 +17,10 @@
 
     <nav>
         @Html.ActionLink("Home", "Index", "Home")
-        @Html.ActionLink("Otel Ara", "Search", "Hotel")
+        @Html.ActionLink("Search Hotels", "Search", "Hotel")
         @Html.ActionLink("About Us", "About", "Home", null, new { @class = "active" })
         @Html.ActionLink("Contact", "Contact", "Home")
-        @Html.ActionLink("Giriş Yap", "Login", "Auth")
+        @Html.ActionLink("Log In", "Login", "Auth")
     </nav>
 
     <!-- HERO BANNER -->

@@ -1,9 +1,9 @@
 @{
-    ViewBag.Title = "Giriş Yap | Kültür Travel";
-    Layout = null; // Login sayfası kendi layout'unu kullanıyor
+    ViewBag.Title = "Sign In | Kültür Travel";
+    Layout = null; // Login page uses its own layout
 }
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,22 +14,23 @@
 <body>
     <div class="login-container">
         <div class="login-box">
-            <h2>Hoş Geldiniz</h2>
-            <p class="subtitle">Hesabınıza giriş yapın</p>
+            <div class="badge">Kültür Travel</div>
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to continue your journey</p>
             <form onsubmit="return loginUser()">
-                <label for="loginEmail">E-posta:</label>
+                <label for="loginEmail">Email</label>
                 <input type="email" id="loginEmail" required />
 
-                <label for="loginPassword">Şifre:</label>
+                <label for="loginPassword">Password</label>
                 <input type="password" id="loginPassword" required />
 
-                <button type="submit">Giriş Yap</button>
+                <button type="submit">Sign In</button>
             </form>
             <p class="small-text">
-                Hesabınız yok mu? @Html.ActionLink("Kayıt Ol", "Signup", "Auth")
+                Don't have an account? @Html.ActionLink("Create Account", "Signup", "Auth")
             </p>
             <p class="small-text">
-                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home")
+                @Html.ActionLink("Back to Home", "Index", "Home")
             </p>
         </div>
     </div>
