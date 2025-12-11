@@ -1,0 +1,103 @@
+@model KulturTravelMVC.Models.Hotel
+@{
+    ViewBag.Title = "Otel Düzenle | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/style.css"  />
+    <style>
+        .edit-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .btn-submit {
+            background: #0077b6;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: #0c3563 !important; color: white !important; text-align: center; padding: 15px 0;">
+        <h1>Kültür Travel - Admin Paneli</h1>
+    </header>
+
+    <nav style="background-color: #417fae !important; display: flex; justify-content: center; gap: 30px; padding: 10px;">
+        @Html.ActionLink("Otel Yönetimi", "Dashboard", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Kullanıcı Yönetimi", "Users", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Çıkış Yap", "Logout", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+    </nav>
+
+    <div class="edit-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Otel Düzenle</h2>
+
+        <form method="post" action="@Url.Action("UpdateHotel")">
+            <input type="hidden" name="Id" id="Id" />
+
+            <div class="form-group">
+                <label>Otel Adı</label>
+                <input type="text" name="Name" id="Name" required />
+            </div>
+
+            <div class="form-group">
+                <label>Fiyat (Gece)</label>
+                <input type="number" name="PricePerNight" id="PricePerNight" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+                <label>Açıklama</label>
+                <textarea name="Description" id="Description" rows="5"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Görseller (virgülle ayırın)</label>
+                <input type="text" value="@string.Join(", ", Model.Images)" id="imagesInput" />
+                <input type="hidden" name="Images" id="Images" id="imagesHidden" />
+            </div>
+
+            <button type="submit" class="btn-submit">Güncelle</button>
+            @Html.ActionLink("İptal", "Dashboard", "Admin", null, new { style = "margin-left: 15px; color: #0077b6;" })
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('imagesInput').addEventListener('change', function() {
+            const images = this.value.split(',').map(img => img.trim()).filter(img => img);
+            document.getElementById('imagesHidden').value = JSON.stringify(images);
+        });
+    </script>
+</body>
+</html>
+
+

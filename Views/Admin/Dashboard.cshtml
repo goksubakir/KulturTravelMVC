@@ -1,0 +1,126 @@
+@model List<KulturTravelMVC.Models.Hotel>
+@{
+    ViewBag.Title = "Admin Paneli | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/style.css"  />
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .hotel-table {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .hotel-table th {
+            background: #0077b6;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .hotel-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .btn-edit, .btn-delete {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .btn-edit {
+            background: #0077b6;
+            color: white;
+        }
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: #0c3563 !important; color: white !important; text-align: center; padding: 15px 0;">
+        <h1>Kültür Travel - Admin Paneli</h1>
+    </header>
+
+    <nav style="background-color: #417fae !important; display: flex; justify-content: center; gap: 30px; padding: 10px;">
+        @Html.ActionLink("Otel Yönetimi", "Dashboard", "Admin", null, new { @class = "active", style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Kullanıcı Yönetimi", "Users", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Çıkış Yap", "Logout", "Admin", null, new { @class = "btn-logout", style = "color: white !important; text-decoration: none; font-weight: 500;" })
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2 style="color: #0077b6;">Otel Yönetimi</h2>
+            @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home", null, new { style = "color: #0077b6;" })
+        </div>
+
+        @if (TempData["Message"] != null)
+        {
+            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                @TempData["Message"]
+            </div>
+        }
+
+        <table class="hotel-table">
+            <thead>
+                <tr>
+                    <th>Otel Adı</th>
+                    <th>Konum</th>
+                    <th>Fiyat (Gece)</th>
+                    <th>Yıldız</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hotel in Model)
+                {
+                    <tr>
+                        <td><strong>@hotel.Name</strong></td>
+                        <td>@hotel.City, @hotel.Country</td>
+                        <td>@hotel.PricePerNight.ToString("N0") ₺</td>
+                        <td>@string.Concat(Enumerable.Repeat("⭐", hotel.StarRating))</td>
+                        <td>
+                            @Html.ActionLink("Düzenle", "EditHotel", "Admin", new { id = hotel.Id }, new { @class = "btn-edit" })
+                            <form method="post" action="@Url.Action("DeleteHotel")" style="display: inline;">
+                                <input type="hidden" name="id" value="@hotel.Id" />
+                                <button type="submit" class="btn-delete" onclick="return confirm('Bu oteli silmek istediğinize emin misiniz?')">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

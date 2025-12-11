@@ -1,0 +1,167 @@
+@model KulturTravelMVC.Models.Reservation
+@{
+    ViewBag.Title = "Reservation | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/style.css"  />
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+        }
+        .reservation-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .reservation-summary {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .btn-submit {
+            background: #0077b6;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: #0c3563 !important; color: white !important; text-align: center; padding: 15px 0;">
+        <h1>Kültür Travel & Tourism</h1>
+    </header>
+
+    <nav style="background-color: #417fae !important; display: flex; justify-content: center; gap: 30px; padding: 10px;">
+        @Html.ActionLink("Anasayfa", "Index", "Home", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Otel Ara", "Search", "Hotel", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Hakkımızda", "About", "Home", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("İletişim", "Contact", "Home", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Giriş Yap", "Login", "Auth", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+    </nav>
+
+    <div class="reservation-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Reservation Details</h2>
+        
+        <div class="reservation-summary">
+            <h3>@Model.HotelName</h3>
+            <p><strong>Room Type:</strong> @Model.RoomType</p>
+            <p><strong>Check-in:</strong> @Model.CheckInDate.ToString("dd MMMM yyyy")</p>
+            <p><strong>Check-out:</strong> @Model.CheckOutDate.ToString("dd MMMM yyyy")</p>
+            <p><strong>Guests:</strong> @Model.NumberOfGuests</p>
+            <p><strong>Total Price:</strong> <span style="font-size: 24px; color: #0077b6; font-weight: 600;">@Model.TotalPrice.ToString("N0") ₺</span></p>
+        </div>
+
+        <form method="post" action="@Url.Action("Create")">
+            <input type="hidden" name="HotelId" value="@Model.HotelId" />
+            <input type="hidden" name="HotelName" value="@Model.HotelName" />
+            <input type="hidden" name="RoomId" value="@Model.RoomId" />
+            <input type="hidden" name="RoomType" value="@Model.RoomType" />
+            <input type="hidden" name="CheckInDate" value="@Model.CheckInDate.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="CheckOutDate" value="@Model.CheckOutDate.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="NumberOfGuests" value="@Model.NumberOfGuests" />
+            <input type="hidden" name="TotalPrice" value="@Model.TotalPrice" />
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="userName" required />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="userEmail" required />
+            </div>
+
+            <button type="submit" class="btn-submit">Confirm Reservation & Proceed to Payment</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            @Html.ActionLink("Hakkımızda", "About", "Home") |
+            @Html.ActionLink("Bize Ulaşın", "Contact", "Home") |
+            <a href="#">Gizlilik Politikası</a> |
+            <a href="#">Instagram</a>
+        </div>
+        <p>&copy; 2025 Kültür Travel Portal. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const loggedIn = localStorage.getItem('loggedIn');
+            
+            if (loggedIn !== 'true' || !user.email) {
+                alert('Please log in to make a reservation.');
+                window.location.href = '/Auth/Login';
+                return;
+            }
+            
+            fetch('/Auth/SetSession', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.fullname)}`
+            });
+            
+            if (user.fullname) {
+                document.getElementById('userName').value = user.fullname;
+            }
+            if (user.email) {
+                document.getElementById('userEmail').value = user.email;
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'hidden';
+            nameInput.name = 'UserName';
+            nameInput.value = userName;
+            this.appendChild(nameInput);
+
+            const emailInput = document.createElement('input');
+            emailInput.type = 'hidden';
+            emailInput.name = 'UserEmail';
+            emailInput.value = userEmail;
+            this.appendChild(emailInput);
+        });
+    </script>
+    <!-- AUTH JS (Oturum kontrolü) -->
+    <script src="@Url.Content("~/Scripts/auth.js")"></script>
+</body>
+</html>
