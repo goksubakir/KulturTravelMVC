@@ -76,14 +76,102 @@ namespace KulturTravelMVC.Controllers
 
         // Otel güncelleme
         [HttpPost]
-        public ActionResult UpdateHotel(Hotel hotel)
+        public ActionResult UpdateHotel(int Id, string Name, string Country, string City, string Address, string Description, 
+            decimal? PricePerNight, int? StarRating, string Images, 
+            string[] roomTypes, int[] roomMaxGuests, decimal[] roomPrices, string[] roomDescriptions, string[] roomAmenities)
         {
             if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Login");
             }
 
-            _hotelService.UpdateHotel(hotel);
+            var existing = _hotelService.GetHotelById(Id);
+            if (existing == null)
+            {
+                TempData["Error"] = "Otel bulunamadı.";
+                return RedirectToAction("Dashboard");
+            }
+
+            // Validasyon
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Country) || 
+                string.IsNullOrWhiteSpace(City) || string.IsNullOrWhiteSpace(Address))
+            {
+                TempData["Error"] = "Lütfen tüm zorunlu alanları doldurun.";
+                return RedirectToAction("EditHotel", new { id = Id });
+            }
+
+            if (!PricePerNight.HasValue || PricePerNight.Value <= 0)
+            {
+                TempData["Error"] = "Geçerli bir fiyat giriniz.";
+                return RedirectToAction("EditHotel", new { id = Id });
+            }
+
+            if (!StarRating.HasValue || StarRating.Value < 1 || StarRating.Value > 5)
+            {
+                TempData["Error"] = "Yıldız sayısı 1-5 arasında olmalıdır.";
+                return RedirectToAction("EditHotel", new { id = Id });
+            }
+
+            // Otel bilgilerini güncelle
+            existing.Name = Name;
+            existing.Country = Country;
+            existing.City = City;
+            existing.Address = Address;
+            existing.Description = Description ?? "";
+            existing.PricePerNight = PricePerNight.Value;
+            existing.StarRating = StarRating.Value;
+
+            // Görselleri parse et
+            if (!string.IsNullOrEmpty(Images))
+            {
+                try
+                {
+                    var parsedImages = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(Images);
+                    if (parsedImages != null && parsedImages.Count > 0)
+                    {
+                        // Yeni görseller varsa güncelle
+                        existing.Images = parsedImages;
+                    }
+                    // Eğer parse başarılı ama liste boşsa, mevcut görselleri koru (hiçbir şey yapma)
+                }
+                catch
+                {
+                    // JSON parse hatası durumunda mevcut görselleri koru (hiçbir şey yapma)
+                }
+            }
+            // Images null veya boş string ise mevcut görselleri koru (hiçbir şey yapma)
+
+            // Odaları güncelle
+            existing.Rooms = new List<Room>();
+            if (roomTypes != null && roomTypes.Length > 0)
+            {
+                int roomId = 1;
+                for (int i = 0; i < roomTypes.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(roomTypes[i]))
+                    {
+                        var room = new Room
+                        {
+                            Id = roomId++,
+                            HotelId = Id,
+                            Type = roomTypes[i],
+                            MaxGuests = roomMaxGuests != null && i < roomMaxGuests.Length ? roomMaxGuests[i] : 2,
+                            PricePerNight = roomPrices != null && i < roomPrices.Length ? roomPrices[i] : 0,
+                            Description = roomDescriptions != null && i < roomDescriptions.Length ? roomDescriptions[i] : "",
+                            Amenities = new List<string>()
+                        };
+
+                        // Amenities'i parse et (virgülle ayrılmış)
+                        if (roomAmenities != null && i < roomAmenities.Length && !string.IsNullOrEmpty(roomAmenities[i]))
+                        {
+                            room.Amenities = roomAmenities[i].Split(',').Select(a => a.Trim()).Where(a => !string.IsNullOrEmpty(a)).ToList();
+                        }
+
+                        existing.Rooms.Add(room);
+                    }
+                }
+            }
+
             TempData["Message"] = "Otel başarıyla güncellendi.";
             return RedirectToAction("Dashboard");
         }

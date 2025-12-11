@@ -482,9 +482,14 @@ namespace KulturTravelMVC.Services
         if (existing != null)
         {
             existing.Name = hotel.Name;
-            existing.PricePerNight = hotel.PricePerNight;
-            existing.Images = hotel.Images;
+            existing.Country = hotel.Country;
+            existing.City = hotel.City;
+            existing.Address = hotel.Address;
             existing.Description = hotel.Description;
+            existing.PricePerNight = hotel.PricePerNight;
+            existing.StarRating = hotel.StarRating;
+            existing.Images = hotel.Images;
+            existing.Rooms = hotel.Rooms;
         }
     }
 

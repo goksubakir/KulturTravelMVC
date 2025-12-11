@@ -1,4 +1,5 @@
 @model KulturTravelMVC.Models.Hotel
+@using Newtonsoft.Json
 @{
     ViewBag.Title = "Otel Düzenle | Kültür Travel";
     Layout = null;
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="~/Content/style.css"  />
     <style>
         .edit-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 30px auto;
             padding: 30px;
             background: white;
@@ -29,12 +30,22 @@
             font-weight: 500;
             color: #0077b6;
         }
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0077b6;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
         .btn-submit {
             background: #0077b6;
@@ -45,6 +56,82 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn-submit:hover {
+            background: #0056b3;
+        }
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 15px;
+        }
+        .rooms-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .room-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .room-title {
+            font-weight: 600;
+            color: #0077b6;
+            font-size: 18px;
+        }
+        .btn-remove-room {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-remove-room:hover {
+            background: #c82333;
+        }
+        .btn-add-room {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .btn-add-room:hover {
+            background: #0056b3;
+        }
+        .form-group small {
+            color: #6c757d;
+            font-size: 13px;
+            display: block;
+            margin-top: 5px;
+        }
+        .section-title {
+            color: #0077b6;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -62,42 +149,199 @@
     <div class="edit-container">
         <h2 style="color: #0077b6; margin-bottom: 30px;">Otel Düzenle</h2>
 
-        <form method="post" action="@Url.Action("UpdateHotel")">
-            <input type="hidden" name="Id" id="Id" />
+        @if (TempData["Error"] != null)
+        {
+            <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                @TempData["Error"]
+            </div>
+        }
+
+        <form method="post" action="@Url.Action("UpdateHotel")" id="hotelForm">
+            <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+
+            <!-- OTEL BİLGİLERİ -->
+            <div class="section-title">Otel Bilgileri</div>
 
             <div class="form-group">
-                <label>Otel Adı</label>
-                <input type="text" name="Name" id="Name" required />
+                <label>Otel Adı *</label>
+                <input type="text" name="Name" id="Name" value="@Model.Name" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ülke *</label>
+                    <input type="text" name="Country" id="Country" value="@Model.Country" required />
+                </div>
+                <div class="form-group">
+                    <label>Şehir *</label>
+                    <input type="text" name="City" id="City" value="@Model.City" required />
+                </div>
             </div>
 
             <div class="form-group">
-                <label>Fiyat (Gece)</label>
-                <input type="number" name="PricePerNight" id="PricePerNight" step="0.01" required />
+                <label>Adres *</label>
+                <input type="text" name="Address" id="Address" value="@Model.Address" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fiyat (Gece) *</label>
+                    <input type="number" name="PricePerNight" id="PricePerNight" step="0.01" min="0" value="@Model.PricePerNight" required />
+                    <small>₺ cinsinden</small>
+                </div>
+                <div class="form-group">
+                    <label>Yıldız Sayısı *</label>
+                    <select name="StarRating" id="StarRating" required>
+                        <option value="1" @(Model.StarRating == 1 ? "selected" : "")>1 Yıldız</option>
+                        <option value="2" @(Model.StarRating == 2 ? "selected" : "")>2 Yıldız</option>
+                        <option value="3" @(Model.StarRating == 3 ? "selected" : "")>3 Yıldız</option>
+                        <option value="4" @(Model.StarRating == 4 ? "selected" : "")>4 Yıldız</option>
+                        <option value="5" @(Model.StarRating == 5 ? "selected" : "")>5 Yıldız</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
-                <label>Açıklama</label>
-                <textarea name="Description" id="Description" rows="5"></textarea>
+                <label>Açıklama *</label>
+                <textarea name="Description" id="Description" rows="5" required>@Model.Description</textarea>
             </div>
 
             <div class="form-group">
-                <label>Görseller (virgülle ayırın)</label>
-                <input type="text" value="@string.Join(", ", Model.Images)" id="imagesInput" />
-                <input type="hidden" name="Images" id="Images" id="imagesHidden" />
+                <label>Görseller</label>
+                <input type="text" id="imagesInput" value="@string.Join(", ", Model.Images ?? new List<string>())" placeholder="Görsel URL'lerini virgülle ayırın (örn: /Content/images/otel1.jpg, /Content/images/otel2.jpg)" />
+                <input type="hidden" name="Images" id="Images" />
+                <small>Görsel URL'lerini virgülle ayırın. Örnek: /Content/images/otel1.jpg, /Content/images/otel2.jpg</small>
             </div>
 
-            <button type="submit" class="btn-submit">Güncelle</button>
-            @Html.ActionLink("İptal", "Dashboard", "Admin", null, new { style = "margin-left: 15px; color: #0077b6;" })
+            <!-- ODA BİLGİLERİ -->
+            <div class="rooms-section">
+                <div class="section-title">Oda Tipleri</div>
+                <div id="roomsContainer">
+                    <!-- Mevcut odalar buraya eklenecek -->
+                </div>
+                <button type="button" class="btn-add-room" onclick="addRoom()">+ Yeni Oda Ekle</button>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="submit" class="btn-submit">Güncelle</button>
+                @Html.ActionLink("İptal", "Dashboard", "Admin", null, new { @class = "btn-cancel" })
+            </div>
         </form>
     </div>
 
     <script>
-        document.getElementById('imagesInput').addEventListener('change', function() {
+        let roomCount = 0;
+        const existingRooms = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Rooms ?? new List<KulturTravelMVC.Models.Room>()));
+
+        // Sayfa yüklendiğinde mevcut odaları ekle
+        document.addEventListener('DOMContentLoaded', function() {
+            if (existingRooms && existingRooms.length > 0) {
+                existingRooms.forEach(function(room) {
+                    addRoom(room);
+                });
+            } else {
+                addRoom();
+            }
+
+            // Görselleri başlat
+            const imagesInput = document.getElementById('imagesInput');
+            const imagesHidden = document.getElementById('Images');
+            if (imagesInput.value) {
+                const images = imagesInput.value.split(',').map(img => img.trim()).filter(img => img);
+                imagesHidden.value = JSON.stringify(images);
+            } else {
+                imagesHidden.value = JSON.stringify([]);
+            }
+        });
+
+        function addRoom(roomData) {
+            roomCount++;
+            const container = document.getElementById('roomsContainer');
+            const roomDiv = document.createElement('div');
+            roomDiv.className = 'room-item';
+            roomDiv.id = `room-${roomCount}`;
+            
+            const roomType = roomData ? roomData.Type : '';
+            const maxGuests = roomData ? roomData.MaxGuests : 2;
+            const price = roomData ? roomData.PricePerNight : 0;
+            const description = roomData ? (roomData.Description || '') : '';
+            const amenities = roomData && roomData.Amenities ? roomData.Amenities.join(', ') : '';
+
+            roomDiv.innerHTML = `
+                <div class="room-header">
+                    <div class="room-title">Oda ${roomCount}</div>
+                    <button type="button" class="btn-remove-room" onclick="removeRoom(${roomCount})">Odayı Kaldır</button>
+                </div>
+                <div class="form-group">
+                    <label>Oda Tipi *</label>
+                    <input type="text" name="roomTypes" value="${roomType}" placeholder="Örn: Single, Double, Suite, Deluxe" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Maksimum Misafir Sayısı *</label>
+                        <input type="number" name="roomMaxGuests" min="1" max="10" value="${maxGuests}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Gece Fiyatı (₺) *</label>
+                        <input type="number" name="roomPrices" step="0.01" min="0" value="${price}" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Oda Açıklaması</label>
+                    <textarea name="roomDescriptions" rows="3" placeholder="Oda hakkında detaylı bilgi">${description}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Olanaklar (Amenities)</label>
+                    <input type="text" name="roomAmenities" value="${amenities}" placeholder="Virgülle ayırın: WiFi, TV, Klima, Balkon, Jakuzi" />
+                    <small>Olanakları virgülle ayırın. Örnek: WiFi, TV, Klima, Balkon</small>
+                </div>
+            `;
+            container.appendChild(roomDiv);
+        }
+
+        function removeRoom(id) {
+            const room = document.getElementById(`room-${id}`);
+            if (room && document.querySelectorAll('.room-item').length > 1) {
+                room.remove();
+            } else {
+                alert('En az bir oda olmalıdır!');
+            }
+        }
+
+        // Görselleri JSON formatına çevir
+        const imagesInput = document.getElementById('imagesInput');
+        const imagesHidden = document.getElementById('Images');
+        
+        imagesInput.addEventListener('input', function() {
             const images = this.value.split(',').map(img => img.trim()).filter(img => img);
-            document.getElementById('imagesHidden').value = JSON.stringify(images);
+            imagesHidden.value = JSON.stringify(images);
+        });
+
+        // Form submit kontrolü
+        document.getElementById('hotelForm').addEventListener('submit', function(e) {
+            const roomItems = document.querySelectorAll('.room-item');
+            if (roomItems.length === 0) {
+                e.preventDefault();
+                alert('En az bir oda olmalıdır!');
+                return false;
+            }
+
+            // Görselleri kontrol et ve JSON formatına çevir
+            const imagesValue = imagesInput.value.trim();
+            if (imagesValue) {
+                const images = imagesValue.split(',').map(img => img.trim()).filter(img => img);
+                if (images.length > 0) {
+                    imagesHidden.value = JSON.stringify(images);
+                } else {
+                    // Eğer görseller boşsa, mevcut görselleri korumak için boş string gönder
+                    // Controller'da boş gelirse mevcut görseller korunacak
+                    imagesHidden.value = "";
+                }
+            } else {
+                // Eğer görseller boşsa, mevcut görselleri korumak için boş string gönder
+                imagesHidden.value = "";
+            }
         });
     </script>
 </body>
 </html>
-
-
