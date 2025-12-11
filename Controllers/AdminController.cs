@@ -102,6 +102,92 @@ namespace KulturTravelMVC.Controllers
             return RedirectToAction("Dashboard");
         }
 
+        // Yeni otel ekleme sayfası
+        [HttpGet]
+        public ActionResult AddHotel()
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+
+        // Yeni otel ekleme işlemi
+        [HttpPost]
+        public ActionResult AddHotel(string Name, string Country, string City, string Address, string Description, 
+            decimal PricePerNight, int StarRating, string Images, 
+            string[] roomTypes, int[] roomMaxGuests, decimal[] roomPrices, string[] roomDescriptions, string[] roomAmenities)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Hotel objesi oluştur
+            var hotel = new Hotel
+            {
+                Name = Name,
+                Country = Country,
+                City = City,
+                Address = Address,
+                Description = Description,
+                PricePerNight = PricePerNight,
+                StarRating = StarRating,
+                Images = new List<string>(),
+                Rooms = new List<Room>()
+            };
+
+            // Görselleri parse et
+            if (!string.IsNullOrEmpty(Images))
+            {
+                try
+                {
+                    hotel.Images = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(Images) ?? new List<string>();
+                }
+                catch
+                {
+                    // JSON parse hatası durumunda boş liste
+                    hotel.Images = new List<string>();
+                }
+            }
+
+            // Odaları oluştur
+            if (roomTypes != null && roomTypes.Length > 0)
+            {
+                int roomId = 1;
+                for (int i = 0; i < roomTypes.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(roomTypes[i]))
+                    {
+                        var room = new Room
+                        {
+                            Id = roomId++,
+                            HotelId = 0, // Hotel ID henüz yok, sonra set edilecek
+                            Type = roomTypes[i],
+                            MaxGuests = roomMaxGuests != null && i < roomMaxGuests.Length ? roomMaxGuests[i] : 2,
+                            PricePerNight = roomPrices != null && i < roomPrices.Length ? roomPrices[i] : 0,
+                            Description = roomDescriptions != null && i < roomDescriptions.Length ? roomDescriptions[i] : "",
+                            Amenities = new List<string>()
+                        };
+
+                        // Amenities'i parse et (virgülle ayrılmış)
+                        if (roomAmenities != null && i < roomAmenities.Length && !string.IsNullOrEmpty(roomAmenities[i]))
+                        {
+                            room.Amenities = roomAmenities[i].Split(',').Select(a => a.Trim()).Where(a => !string.IsNullOrEmpty(a)).ToList();
+                        }
+
+                        hotel.Rooms.Add(room);
+                    }
+                }
+            }
+
+            _hotelService.AddHotel(hotel);
+            TempData["Message"] = "Otel başarıyla eklendi.";
+            return RedirectToAction("Dashboard");
+        }
+
         // Kullanıcı listesi
         public ActionResult Users()
         {

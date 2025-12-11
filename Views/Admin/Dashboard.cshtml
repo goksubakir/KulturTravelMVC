@@ -81,7 +81,10 @@
     <div class="admin-container">
         <div class="admin-header">
             <h2 style="color: #0077b6;">Otel Yönetimi</h2>
-            @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home", null, new { style = "color: #0077b6;" })
+            <div>
+                @Html.ActionLink("+ Yeni Otel Ekle", "AddHotel", "Admin", null, new { style = "background: #28a745; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 15px;" })
+                @Html.ActionLink("Ana Sayfaya Dön", "Index", "Home", null, new { style = "color: #0077b6;" })
+            </div>
         </div>
 
         @if (TempData["Message"] != null)

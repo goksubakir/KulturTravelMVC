@@ -1,0 +1,309 @@
+@{
+    ViewBag.Title = "Yeni Otel Ekle | Kültür Travel";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/style.css"  />
+    <style>
+        .add-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #0077b6;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0077b6;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .btn-submit {
+            background: #28a745;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn-submit:hover {
+            background: #218838;
+        }
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 15px;
+        }
+        .rooms-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .room-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .room-title {
+            font-weight: 600;
+            color: #0077b6;
+            font-size: 18px;
+        }
+        .btn-remove-room {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-remove-room:hover {
+            background: #c82333;
+        }
+        .btn-add-room {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .btn-add-room:hover {
+            background: #0056b3;
+        }
+        .form-group small {
+            color: #6c757d;
+            font-size: 13px;
+            display: block;
+            margin-top: 5px;
+        }
+        .section-title {
+            color: #0077b6;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: #0c3563 !important; color: white !important; text-align: center; padding: 15px 0;">
+        <h1>Kültür Travel - Admin Paneli</h1>
+    </header>
+
+    <nav style="background-color: #417fae !important; display: flex; justify-content: center; gap: 30px; padding: 10px;">
+        @Html.ActionLink("Otel Yönetimi", "Dashboard", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Kullanıcı Yönetimi", "Users", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+        @Html.ActionLink("Çıkış Yap", "Logout", "Admin", null, new { style = "color: white !important; text-decoration: none; font-weight: 500;" })
+    </nav>
+
+    <div class="add-container">
+        <h2 style="color: #0077b6; margin-bottom: 30px;">Yeni Otel Ekle</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                @TempData["Error"]
+            </div>
+        }
+
+        <form method="post" action="@Url.Action("AddHotel")" id="hotelForm">
+            <!-- OTEL BİLGİLERİ -->
+            <div class="section-title">Otel Bilgileri</div>
+
+            <div class="form-group">
+                <label>Otel Adı *</label>
+                <input type="text" name="Name" id="Name" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ülke *</label>
+                    <input type="text" name="Country" id="Country" required />
+                </div>
+                <div class="form-group">
+                    <label>Şehir *</label>
+                    <input type="text" name="City" id="City" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Adres *</label>
+                <input type="text" name="Address" id="Address" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fiyat (Gece) *</label>
+                    <input type="number" name="PricePerNight" id="PricePerNight" step="0.01" min="0" required />
+                    <small>₺ cinsinden</small>
+                </div>
+                <div class="form-group">
+                    <label>Yıldız Sayısı *</label>
+                    <select name="StarRating" id="StarRating" required>
+                        <option value="1">1 Yıldız</option>
+                        <option value="2">2 Yıldız</option>
+                        <option value="3">3 Yıldız</option>
+                        <option value="4">4 Yıldız</option>
+                        <option value="5" selected>5 Yıldız</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Açıklama *</label>
+                <textarea name="Description" id="Description" rows="5" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Görseller</label>
+                <input type="text" id="imagesInput" placeholder="Görsel URL'lerini virgülle ayırın (örn: /Content/images/otel1.jpg, /Content/images/otel2.jpg)" />
+                <input type="hidden" name="Images" id="Images" />
+                <small>Görsel URL'lerini virgülle ayırın. Örnek: /Content/images/otel1.jpg, /Content/images/otel2.jpg</small>
+            </div>
+
+            <!-- ODA BİLGİLERİ -->
+            <div class="rooms-section">
+                <div class="section-title">Oda Tipleri</div>
+                <div id="roomsContainer">
+                    <!-- Odalar buraya dinamik olarak eklenecek -->
+                </div>
+                <button type="button" class="btn-add-room" onclick="addRoom()">+ Yeni Oda Ekle</button>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="submit" class="btn-submit">Otel Ekle</button>
+                @Html.ActionLink("İptal", "Dashboard", "Admin", null, new { @class = "btn-cancel" })
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let roomCount = 0;
+
+        // İlk odayı ekle
+        document.addEventListener('DOMContentLoaded', function() {
+            addRoom();
+        });
+
+        function addRoom() {
+            roomCount++;
+            const container = document.getElementById('roomsContainer');
+            const roomDiv = document.createElement('div');
+            roomDiv.className = 'room-item';
+            roomDiv.id = `room-${roomCount}`;
+            roomDiv.innerHTML = `
+                <div class="room-header">
+                    <div class="room-title">Oda ${roomCount}</div>
+                    <button type="button" class="btn-remove-room" onclick="removeRoom(${roomCount})">Odayı Kaldır</button>
+                </div>
+                <div class="form-group">
+                    <label>Oda Tipi *</label>
+                    <input type="text" name="roomTypes" placeholder="Örn: Single, Double, Suite, Deluxe" required />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Maksimum Misafir Sayısı *</label>
+                        <input type="number" name="roomMaxGuests" min="1" max="10" value="2" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Gece Fiyatı (₺) *</label>
+                        <input type="number" name="roomPrices" step="0.01" min="0" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Oda Açıklaması</label>
+                    <textarea name="roomDescriptions" rows="3" placeholder="Oda hakkında detaylı bilgi"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Olanaklar (Amenities)</label>
+                    <input type="text" name="roomAmenities" placeholder="Virgülle ayırın: WiFi, TV, Klima, Balkon, Jakuzi" />
+                    <small>Olanakları virgülle ayırın. Örnek: WiFi, TV, Klima, Balkon</small>
+                </div>
+            `;
+            container.appendChild(roomDiv);
+        }
+
+        function removeRoom(id) {
+            const room = document.getElementById(`room-${id}`);
+            if (room && document.querySelectorAll('.room-item').length > 1) {
+                room.remove();
+            } else {
+                alert('En az bir oda olmalıdır!');
+            }
+        }
+
+        // Görselleri JSON formatına çevir
+        document.getElementById('imagesInput').addEventListener('input', function() {
+            const images = this.value.split(',').map(img => img.trim()).filter(img => img);
+            document.getElementById('Images').value = JSON.stringify(images);
+        });
+
+        // Form submit kontrolü
+        document.getElementById('hotelForm').addEventListener('submit', function(e) {
+            const roomItems = document.querySelectorAll('.room-item');
+            if (roomItems.length === 0) {
+                e.preventDefault();
+                alert('En az bir oda eklemelisiniz!');
+                return false;
+            }
+
+            // Görselleri kontrol et
+            const imagesInput = document.getElementById('imagesInput').value;
+            if (imagesInput.trim()) {
+                const images = imagesInput.split(',').map(img => img.trim()).filter(img => img);
+                document.getElementById('Images').value = JSON.stringify(images);
+            } else {
+                document.getElementById('Images').value = JSON.stringify([]);
+            }
+        });
+    </script>
+</body>
+</html>

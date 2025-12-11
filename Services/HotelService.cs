@@ -494,7 +494,38 @@ namespace KulturTravelMVC.Services
         if (hotel != null)
             _hotels.Remove(hotel);
         }
+
+    public void AddHotel(Hotel hotel)
+    {
+        // Yeni ID oluştur
+        int newId = _hotels.Count > 0 ? _hotels.Max(h => h.Id) + 1 : 1;
+        hotel.Id = newId;
+
+        // Room ID'lerini güncelle
+        if (hotel.Rooms != null)
+        {
+            int roomId = 1;
+            foreach (var room in hotel.Rooms)
+            {
+                room.Id = roomId++;
+                room.HotelId = newId;
+            }
+        }
+
+        // Varsayılan değerler
+        if (hotel.Images == null || hotel.Images.Count == 0)
+        {
+            hotel.Images = new List<string> { $"/Content/images/otel{newId}.jpg" };
+        }
+
+        if (hotel.AverageRating == 0)
+        {
+            hotel.AverageRating = 0;
+            hotel.TotalRatings = 0;
+        }
+
+        _hotels.Add(hotel);
+    }
     }
 }
-
 
